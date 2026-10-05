@@ -8,7 +8,8 @@ FEEDS = [
     ("Krebs on Security", "https://krebsonsecurity.com/feed/"),
     ("Dark Reading", "https://www.darkreading.com/rss.xml"),
     ("The Record", "https://therecord.media/feed"),
-    ("CISA Advisories", "https://www.cisa.gov/cybersecurity-advisories/all.xml"),
+    ("CyberScoop", "https://cyberscoop.com/feed/"),
+    ("SANS ISC", "https://isc.sans.edu/rssfeed_full.xml"),
 ]
 
 # CISA Known Exploited Vulnerabilities catalog (JSON)
