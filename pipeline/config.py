@@ -1,0 +1,58 @@
+"""CyberBrief settings. Edit this file to change sources, filters and alerts."""
+
+# News sources (name, RSS URL)
+FEEDS = [
+    ("BleepingComputer", "https://www.bleepingcomputer.com/feed/"),
+    ("The Hacker News", "https://feeds.feedburner.com/TheHackersNews"),
+    ("SecurityWeek", "https://www.securityweek.com/feed/"),
+    ("Krebs on Security", "https://krebsonsecurity.com/feed/"),
+    ("Dark Reading", "https://www.darkreading.com/rss.xml"),
+    ("The Record", "https://therecord.media/feed"),
+    ("CISA Advisories", "https://www.cisa.gov/cybersecurity-advisories/all.xml"),
+]
+
+# CISA Known Exploited Vulnerabilities catalog (JSON)
+KEV_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+
+# Titles matching any of these are dropped before the AI sees them (saves money)
+EXCLUDE_PATTERNS = [
+    r"\bwebinar\b", r"\bsponsored\b", r"\bpodcast\b", r"\bdeals?\b.*\boff\b",
+    r"\d+% off", r"\bweek in review\b", r"\bweekly recap\b", r"\bon-demand\b",
+    r"\bwhitepaper\b", r"\bgiveaway\b",
+]
+
+# Stories mentioning these get a watchlist tag. High-severity matches also push a notification.
+WATCHLIST = [
+    "Microsoft 365", "Entra", "Exchange", "Google Workspace", "Chromebook",
+    "K-12", "school district", "PowerSchool", "Fortinet", "FortiGate",
+    "Palo Alto", "Cisco", "Ivanti", "Citrix", "SonicWall", "AWS",
+]
+
+# AI provider: "github" (free, no key), "gemini" (free key) or "anthropic" (paid, ~$3-5/month).
+# Can also be set without editing code via the AI_PROVIDER repository variable.
+AI_PROVIDER = "github"
+MODELS = {
+    "github": "openai/gpt-4o-mini",          # GitHub Models, uses the Actions token
+    "gemini": "gemini-2.5-flash-lite",       # needs GEMINI_API_KEY secret
+    "anthropic": "claude-haiku-4-5-20251001",  # needs ANTHROPIC_API_KEY secret
+}
+# USD per million tokens (input, output), used for the cost shown in the app
+PRICES = {"github": (0, 0), "gemini": (0, 0), "anthropic": (1.00, 5.00)}
+CALL_DELAY_SECONDS = 5    # pause between AI calls to stay under free-tier per-minute limits
+BATCH_SIZE = 8            # stories per API call
+MAX_TEXT_CHARS = 1200     # article text sent per story
+MAX_PER_RUN = 60          # safety cap on stories processed per run
+
+# Story selection
+MAX_ITEM_AGE_HOURS = 48   # ignore older stories
+FIRST_RUN_ITEMS = 15      # on the very first run, only summarize this many
+
+# Card retention in the app
+RETENTION_DAYS = 14
+MAX_CARDS = 300
+
+# Notifications
+TIMEZONE = "America/New_York"
+NOTIFY_MAX_PER_RUN = 4    # extra critical stories are grouped into one alert
+QUIET_HOURS = (23, 6)     # 11pm to 6am: alerts arrive silently
+DIGEST_HOUR = 7           # morning summary notification (local hour); None to disable

@@ -1,0 +1,435 @@
+"""CyberBrief pipeline.
+
+Fetches security news, turns each story into a 60-word card with an AI model,
+writes docs/cards.json for the app, and pushes critical stories to your phone via ntfy.
+"""
+
+import datetime as dt
+import hashlib
+import html
+import json
+import os
+import re
+import sys
+import time
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+import feedparser
+import requests
+
+import config
+
+ROOT = Path(__file__).resolve().parent.parent
+CARDS_PATH = ROOT / "docs" / "cards.json"
+STATE_PATH = ROOT / "pipeline" / "state.json"
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; CyberBrief/1.0; personal news reader)"}
+UTC = dt.timezone.utc
+
+SEVERITIES = ("critical", "high", "info")
+CATEGORIES = ("Vulnerability", "Breach", "Ransomware", "Malware", "Threat actor", "Policy", "Research")
+
+SYSTEM_PROMPT = """You are the editor of CyberBrief, a cybersecurity news app that turns each story into one short card, in the style of Inshorts. Your reader is a SOC analyst who wants to know what happened and whether it matters in under 30 seconds.
+
+You receive JSON with:
+- recent_cards: cards already published (id and headline)
+- stories: new stories to process, each with an index i
+
+Return only a JSON object, with no prose and no code fences:
+{"cards": [{"i": 0, "skip": false, "duplicate_of": null, "headline": "...", "summary": "...", "severity": "high", "category": "Vulnerability", "cves": ["CVE-2026-12345"]}]}
+
+Return exactly one entry per story, in the same order.
+
+Fields:
+- skip: true if the item is not news: advertising, webinars, product launches, sponsored posts, deals, listicles, or event and podcast promotions. When skip is true, the other fields can be empty.
+- duplicate_of: if the story covers the same incident or vulnerability as a card in recent_cards, the id of that card. If it repeats an earlier story in this batch, "i:<index>". Otherwise null. A genuinely new development (patch released, exploitation confirmed, victim count revised) is not a duplicate.
+- headline: at most 10 words. Plain and specific: name the vendor, product or victim. No clickbait, no questions, no trailing period.
+- summary: 55 to 65 words in one paragraph. Cover what happened, who or what is affected, the current status (exploited in the wild, patch available, under investigation), and what defenders should do when there is a clear action. Use only facts in the story; never invent numbers, versions or attributions. Neutral tone.
+- severity:
+  - "critical": exploitation in the wild or a CISA KEV addition affecting widely deployed products; unauthenticated RCE or CVSS 9.0+ in widely deployed enterprise software or edge devices; a breach or ransomware attack with major real-world impact (critical infrastructure, healthcare, education systems, or millions of people).
+  - "high": serious vulnerabilities without known exploitation; notable breaches; major new malware or threat-actor campaigns; KEV additions for old or niche products.
+  - "info": research, analysis, arrests and sentencing, policy and regulation, industry news.
+  When unsure between two levels, choose the lower one.
+- category: one of "Vulnerability", "Breach", "Ransomware", "Malware", "Threat actor", "Policy", "Research".
+- cves: CVE IDs mentioned in the story, or an empty list."""
+
+
+# ---------- helpers ----------
+
+def log(msg):
+    print(msg, flush=True)
+
+
+def now():
+    return dt.datetime.now(UTC)
+
+
+def iso(d):
+    return d.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def parse_iso(s):
+    return dt.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+
+
+def card_id(url):
+    return hashlib.sha1(url.strip().encode()).hexdigest()[:10]
+
+
+def clean(text, limit):
+    text = re.sub(r"<[^>]+>", " ", text or "")
+    text = re.sub(r"\s+", " ", html.unescape(text)).strip()
+    return text[:limit]
+
+
+def load_json(path, default):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
+
+
+def save_json(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def app_url():
+    if os.environ.get("APP_URL"):
+        return os.environ["APP_URL"].rstrip("/") + "/"
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    if "/" in repo:
+        owner, name = repo.split("/", 1)
+        return f"https://{owner.lower()}.github.io/{name}/"
+    return ""
+
+
+# ---------- fetching ----------
+
+def fetch_rss(name, url):
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=20)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        log(f"  ! {name}: {e}")
+        return []
+    feed = feedparser.parse(resp.content)
+    items = []
+    for e in feed.entries:
+        link, title = e.get("link"), e.get("title")
+        if not link or not title:
+            continue
+        t = e.get("published_parsed") or e.get("updated_parsed")
+        published = min(dt.datetime(*t[:6], tzinfo=UTC), now()) if t else now()
+        text = e.get("summary", "")
+        if e.get("content"):
+            text = e.content[0].get("value", text)
+        items.append({
+            "id": card_id(link), "url": link, "source": name,
+            "title": clean(title, 300), "published": iso(published),
+            "text": clean(text, config.MAX_TEXT_CHARS),
+        })
+    log(f"  {name}: {len(items)} items")
+    return items
+
+
+def fetch_kev():
+    try:
+        resp = requests.get(config.KEV_URL, headers=HEADERS, timeout=30)
+        resp.raise_for_status()
+        vulns = resp.json().get("vulnerabilities", [])
+    except (requests.RequestException, ValueError) as e:
+        log(f"  ! CISA KEV: {e}")
+        return []
+    cutoff = now() - dt.timedelta(hours=config.MAX_ITEM_AGE_HOURS)
+    items = []
+    for v in vulns:
+        try:
+            added = dt.datetime.strptime(v["dateAdded"], "%Y-%m-%d").replace(tzinfo=UTC)
+        except (KeyError, ValueError):
+            continue
+        if added < cutoff:
+            continue
+        cve = v.get("cveID", "")
+        url = f"https://nvd.nist.gov/vuln/detail/{cve}"
+        items.append({
+            "id": card_id(url), "url": url, "source": "CISA KEV",
+            "title": f"CISA adds {cve} ({v.get('vendorProject', '')} {v.get('product', '')}) to KEV catalog",
+            "published": iso(added),
+            "text": clean(
+                f"{v.get('vulnerabilityName', '')}. {v.get('shortDescription', '')} "
+                f"Required action: {v.get('requiredAction', '')} Federal due date: {v.get('dueDate', '')}. "
+                f"Known ransomware use: {v.get('knownRansomwareCampaignUse', 'Unknown')}.",
+                config.MAX_TEXT_CHARS),
+        })
+    log(f"  CISA KEV: {len(items)} recent additions")
+    return items
+
+
+def excluded(item):
+    return any(re.search(p, item["title"], re.I) for p in config.EXCLUDE_PATTERNS)
+
+
+def watch_hits(text):
+    return [w for w in config.WATCHLIST if re.search(r"(?<!\w)" + re.escape(w) + r"(?!\w)", text, re.I)]
+
+
+# ---------- summarizing ----------
+
+def parse_model_json(text):
+    text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
+    start, end = text.find("{"), text.rfind("}")
+    return json.loads(text[start:end + 1])
+
+
+OPENAI_COMPATIBLE = {
+    "github": ("https://models.github.ai/inference/chat/completions", "GITHUB_TOKEN"),
+    "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "GEMINI_API_KEY"),
+}
+KEY_NAMES = {"github": "GITHUB_TOKEN", "gemini": "GEMINI_API_KEY", "anthropic": "ANTHROPIC_API_KEY"}
+
+
+class RateLimited(Exception):
+    pass
+
+
+def provider():
+    name = (os.environ.get("AI_PROVIDER") or config.AI_PROVIDER).strip().lower()
+    if name not in KEY_NAMES:
+        sys.exit(f"Unknown AI provider '{name}'. Use github, gemini or anthropic.")
+    return name
+
+
+def call_model(name, system, user, max_tokens):
+    """Returns (text, input_tokens, output_tokens)."""
+    model = config.MODELS[name]
+    if name == "anthropic":
+        import anthropic
+        try:
+            msg = anthropic.Anthropic(max_retries=3).messages.create(
+                model=model, max_tokens=max_tokens, system=system,
+                messages=[{"role": "user", "content": user}])
+        except anthropic.RateLimitError as e:
+            raise RateLimited(str(e))
+        text = "".join(b.text for b in msg.content if b.type == "text")
+        return text, msg.usage.input_tokens, msg.usage.output_tokens
+
+    url, key_name = OPENAI_COMPATIBLE[name]
+    body = {"model": model, "max_tokens": max_tokens, "temperature": 0.2,
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
+    if name == "github":
+        body["response_format"] = {"type": "json_object"}
+    resp = requests.post(url, json=body, timeout=90, headers={
+        "Authorization": f"Bearer {os.environ[key_name]}", "Content-Type": "application/json"})
+    if resp.status_code == 429:
+        raise RateLimited(resp.text[:200])
+    if not resp.ok:
+        raise RuntimeError(f"{resp.status_code}: {resp.text[:300]}")
+    data = resp.json()
+    usage = data.get("usage") or {}
+    return (data["choices"][0]["message"]["content"] or "",
+            usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0))
+
+
+def summarize(name, batch, recent_cards):
+    payload = {
+        "recent_cards": [{"id": c["id"], "headline": c["headline"]} for c in recent_cards],
+        "stories": [{"i": n, "source": it["source"], "title": it["title"],
+                     "published": it["published"], "text": it["text"]} for n, it in enumerate(batch)],
+    }
+    text, tin, tout = call_model(name, SYSTEM_PROMPT, json.dumps(payload, ensure_ascii=False),
+                                 300 * len(batch) + 300)
+    return parse_model_json(text).get("cards", []), tin, tout
+
+
+# ---------- notifications ----------
+
+def ntfy(title, message, priority=3, tags=None, click=None):
+    topic = os.environ.get("NTFY_TOPIC")
+    if not topic:
+        log("  (NTFY_TOPIC not set, skipping notification)")
+        return
+    server = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
+    body = {"topic": topic, "title": title[:250], "message": message[:3500],
+            "priority": priority, "tags": tags or []}
+    if click:
+        body["click"] = click
+    try:
+        requests.post(server, json=body, timeout=15).raise_for_status()
+        log(f"  > notified: {title}")
+    except requests.RequestException as e:
+        log(f"  ! notification failed: {e}")
+
+
+def in_quiet_hours(local):
+    start, end = config.QUIET_HOURS
+    h = local.hour
+    return h >= start or h < end if start > end else start <= h < end
+
+
+def send_alerts(new_cards, local):
+    base = app_url()
+    alerts = [c for c in new_cards
+              if c["severity"] == "critical" or (c["severity"] == "high" and c["watch"])]
+    alerts.sort(key=lambda c: c["published"], reverse=True)
+    alerts.sort(key=lambda c: c["severity"] != "critical")  # stable: critical first, newest first
+    quiet = in_quiet_hours(local)
+    for c in alerts[:config.NOTIFY_MAX_PER_RUN]:
+        crit = c["severity"] == "critical"
+        prefix = "Critical" if crit else "Watchlist"
+        ntfy(f"{prefix}: {c['headline']}", c["summary"],
+             priority=2 if quiet else (4 if crit else 3),
+             tags=["rotating_light"] if crit else ["warning"],
+             click=f"{base}#{c['id']}" if base else c["url"])
+    extra = alerts[config.NOTIFY_MAX_PER_RUN:]
+    if extra:
+        ntfy(f"{len(extra)} more alerts", "\n".join("- " + c["headline"] for c in extra),
+             priority=2 if quiet else 3, tags=["warning"], click=base or None)
+
+
+def send_digest(cards, state, local):
+    if config.DIGEST_HOUR is None or local.hour < config.DIGEST_HOUR:
+        return
+    today = local.date().isoformat()
+    if state.get("last_digest") == today:
+        return
+    since = state.get("last_digest_at") or iso(now() - dt.timedelta(hours=24))
+    fresh = [c for c in cards if c["added"] > since]
+    state["last_digest"], state["last_digest_at"] = today, iso(now())
+    if not fresh:
+        return
+    counts = {s: sum(c["severity"] == s for c in fresh) for s in SEVERITIES}
+    parts = [f"{counts[s]} {s}" for s in ("critical", "high") if counts[s]]
+    top = sorted(fresh, key=lambda c: SEVERITIES.index(c["severity"]))[:3]
+    ntfy(f"Morning brief: {len(fresh)} new stories" + (f" ({', '.join(parts)})" if parts else ""),
+         "\n".join("- " + c["headline"] for c in top),
+         priority=3, tags=["newspaper"], click=app_url() or None)
+
+
+# ---------- main ----------
+
+def main():
+    ai = provider()
+    if not os.environ.get(KEY_NAMES[ai]):
+        hint = ("Run this inside GitHub Actions with 'models: read' permission." if ai == "github"
+                else "Add it under repo Settings > Secrets and variables > Actions.")
+        sys.exit(f"{KEY_NAMES[ai]} is not set for AI provider '{ai}'. {hint}")
+    log(f"AI provider: {ai} ({config.MODELS[ai]})")
+
+    state = load_json(STATE_PATH, {})
+    data = load_json(CARDS_PATH, {})
+    cards = data.get("cards", [])
+    seen = state.setdefault("seen", {})
+    first_run = not seen
+    by_id = {c["id"]: c for c in cards}
+
+    log("Fetching feeds")
+    items = [it for name, url in config.FEEDS for it in fetch_rss(name, url)] + fetch_kev()
+
+    cutoff = iso(now() - dt.timedelta(hours=config.MAX_ITEM_AGE_HOURS))
+    unique = {}
+    for it in items:
+        if it["id"] in seen or it["id"] in by_id or it["published"] < cutoff:
+            continue
+        if excluded(it):
+            seen[it["id"]] = iso(now())
+            continue
+        unique.setdefault(it["id"], it)
+    queue = sorted(unique.values(), key=lambda it: it["published"], reverse=True)
+    log(f"{len(queue)} new stories after filtering")
+
+    if first_run:
+        for it in queue[config.FIRST_RUN_ITEMS:]:
+            seen[it["id"]] = iso(now())
+        queue = queue[:config.FIRST_RUN_ITEMS]
+        log(f"First run: summarizing the newest {len(queue)}, notifications off")
+    queue = queue[:config.MAX_PER_RUN]
+    queue.reverse()  # oldest first, so duplicates attach to the earliest card
+
+    month = now().strftime("%Y-%m")
+    usage = state.setdefault("usage", {}).setdefault(month, {"input": 0, "output": 0, "calls": 0})
+    usage.setdefault("cost", 0.0)
+    price_in, price_out = config.PRICES.get(ai, (0, 0))
+    new_cards = []
+
+    for start in range(0, len(queue), config.BATCH_SIZE):
+        batch = queue[start:start + config.BATCH_SIZE]
+        recent = sorted(cards, key=lambda c: c["published"], reverse=True)[:40]
+        if start:
+            time.sleep(config.CALL_DELAY_SECONDS)
+        try:
+            results, tin, tout = summarize(ai, batch, recent)
+        except RateLimited as e:  # free-tier limit hit: stop, the rest waits for the next run
+            log(f"  ! rate limited, stopping this run: {e}")
+            break
+        except Exception as e:  # leave the batch unseen so the next run retries it
+            log(f"  ! summarize failed: {e}")
+            continue
+        usage["input"] += tin
+        usage["output"] += tout
+        usage["calls"] += 1
+        usage["cost"] += tin / 1e6 * price_in + tout / 1e6 * price_out
+
+        made = {}  # batch index -> card
+        for r in results:
+            try:
+                i = int(r.get("i"))
+                it = batch[i]
+            except (TypeError, ValueError, IndexError):
+                continue
+            seen[it["id"]] = iso(now())
+            if r.get("skip"):
+                continue
+            dup = r.get("duplicate_of")
+            target = None
+            if isinstance(dup, str) and dup.startswith("i:"):
+                target = made.get(int(dup[2:])) if dup[2:].isdigit() else None
+            elif dup:
+                target = by_id.get(dup)
+            if target:
+                if it["source"] != target["source"] and all(a["source"] != it["source"] for a in target["also"]):
+                    target["also"].append({"source": it["source"], "url": it["url"]})
+                continue
+            headline, summary = clean(r.get("headline"), 120), clean(r.get("summary"), 700)
+            if not headline or not summary:
+                continue
+            card = {
+                "id": it["id"], "headline": headline, "summary": summary,
+                "severity": r.get("severity") if r.get("severity") in SEVERITIES else "info",
+                "category": r.get("category") if r.get("category") in CATEGORIES else "Research",
+                "cves": [c for c in r.get("cves", []) if isinstance(c, str) and re.fullmatch(r"CVE-\d{4}-\d{4,}", c)][:6],
+                "watch": watch_hits(f"{it['title']} {it['text']} {summary}"),
+                "source": it["source"], "url": it["url"],
+                "published": it["published"], "added": iso(now()), "also": [],
+            }
+            made[i] = card
+            by_id[card["id"]] = card
+            cards.append(card)
+            new_cards.append(card)
+        for it in batch:  # anything the model left out is marked seen to avoid retry loops
+            seen.setdefault(it["id"], iso(now()))
+
+    log(f"{len(new_cards)} new cards")
+
+    # prune old cards and seen ids
+    keep_after = iso(now() - dt.timedelta(days=config.RETENTION_DAYS))
+    cards = sorted((c for c in cards if c["published"] >= keep_after),
+                   key=lambda c: c["published"], reverse=True)[:config.MAX_CARDS]
+    seen_cutoff = iso(now() - dt.timedelta(days=30))
+    state["seen"] = {k: v for k, v in seen.items() if v >= seen_cutoff}
+
+    cost = usage["cost"]
+    state["usage"] = {k: v for k, v in state["usage"].items() if k >= (now() - dt.timedelta(days=62)).strftime("%Y-%m")}
+    log(f"Month to date: {usage['calls']} calls, {usage['input']:,} in / {usage['output']:,} out tokens, ${cost:.2f}")
+
+    local = now().astimezone(ZoneInfo(config.TIMEZONE))
+    if not first_run:
+        send_alerts(new_cards, local)
+    send_digest(cards, state, local)
+
+    save_json(CARDS_PATH, {"updated": iso(now()), "month_cost_usd": round(cost, 2),
+                           "ai_calls_month": usage["calls"], "cards": cards})
+    save_json(STATE_PATH, state)
+
+
+if __name__ == "__main__":
+    main()
