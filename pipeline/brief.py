@@ -178,6 +178,8 @@ def watch_hits(text):
 def parse_model_json(text):
     text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
     start, end = text.find("{"), text.rfind("}")
+    if start < 0 or end < start:
+        raise ValueError(f"model reply has no JSON object: {text[:300]!r}")
     return json.loads(text[start:end + 1])
 
 
@@ -224,7 +226,11 @@ def call_model(name, system, user, max_tokens):
         raise RateLimited(resp.text[:200])
     if not resp.ok:
         raise RuntimeError(f"{resp.status_code}: {resp.text[:300]}")
-    data = resp.json()
+    try:
+        data = resp.json()
+    except ValueError:
+        raise RuntimeError(f"non-JSON response from {url} ({resp.status_code}, "
+                           f"{resp.headers.get('Content-Type')}): {resp.text[:300]!r}")
     usage = data.get("usage") or {}
     return (data["choices"][0]["message"]["content"] or "",
             usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0))
