@@ -1,5 +1,5 @@
 // Offline support: the app shell is cached; stories load fresh and fall back to the last copy.
-const SHELL = "cyberbrief-shell-v1";
+const SHELL = "cyberbrief-shell-v2";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icons/icon-192.png"];
 
 self.addEventListener("install", (e) => {
@@ -30,7 +30,21 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  // everything else (page, icons, fonts): cache first, then network
+  // the page itself: network first, so design updates show up without reinstalling
+  if (e.request.mode === "navigate" || url.pathname.endsWith("/index.html")) {
+    e.respondWith(
+      fetch(e.request).then((res) => {
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(SHELL).then((c) => c.put("./", copy));
+        }
+        return res;
+      }).catch(() => caches.match("./"))
+    );
+    return;
+  }
+
+  // everything else (icons, fonts): cache first, then network
   e.respondWith(
     caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
       if (res.ok || res.type === "opaque") {
