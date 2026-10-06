@@ -1,8 +1,108 @@
 {
- "updated": "2026-10-06T06:47:57Z",
- "month_cost_usd": 0.03,
- "ai_calls_month": 5,
+ "updated": "2026-10-06T14:08:09Z",
+ "month_cost_usd": 0.04,
+ "ai_calls_month": 8,
  "cards": [
+  {
+   "id": "0ec2745721",
+   "headline": "RMM tools abused in phishing campaigns deliver malware",
+   "summary": "Threat actors continue exploiting remote management and monitoring tools via phishing emails delivering malicious PDF invoices. PDFs use OpenAction and URI keywords to redirect victims to malicious VBS files that download additional payloads. Organizations should enforce email filtering for suspicious PDF behaviors and monitor RMM tool usage for anomalies.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "SANS ISC",
+   "url": "https://isc.sans.edu/diary/rss/33400",
+   "published": "2026-10-06T13:16:02Z",
+   "added": "2026-10-06T14:08:09Z",
+   "also": []
+  },
+  {
+   "id": "893051a996",
+   "headline": "LibreOffice OpenOffice spreadsheets run code without macro warnings",
+   "summary": "Malicious spreadsheets can execute attacker code in LibreOffice and Apache OpenOffice when opened, bypassing macro warnings. The vulnerability requires Java support to be enabled. Exploitation has only been demonstrated as proof of concept with no known wild attacks reported. Users should disable Java support if unnecessary or await patches from vendors.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/libreoffice-and-openoffice-flaws-let.html",
+   "published": "2026-10-06T11:57:00Z",
+   "added": "2026-10-06T14:08:09Z",
+   "also": []
+  },
+  {
+   "id": "c3a90ebed3",
+   "headline": "Apple tightens Full Disk Access controls for AI security",
+   "summary": "Apple announced enhanced Full Disk Access controls in macOS to mitigate risks from increasingly capable and autonomous AI agents. The new controls restrict agent and application permissions to sensitive system areas. Users should update to the latest macOS version. This addresses growing security concerns around AI agent capabilities and potential unauthorized access.",
+   "severity": "info",
+   "category": "Policy",
+   "cves": [],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/apple-to-tighten-full-disk-access-controls-in-macos-amid-ai-risks/",
+   "published": "2026-10-06T11:48:59Z",
+   "added": "2026-10-06T14:07:58Z",
+   "also": []
+  },
+  {
+   "id": "a47789abd9",
+   "headline": "Critical vulnerabilities found in 15,465 public MCP servers",
+   "summary": "OX Security discovered critical vulnerabilities in Anthropic's Model Context Protocol ecosystem. The research examined 15,465 public MCP servers used to connect AI agents to tools and data. Critical flaws could allow attackers to compromise AI workflows and access sensitive data. Organizations deploying MCP servers should assess exposure, apply patches from Anthropic, and implement input validation and access controls.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/welcome-to-jungle-what-we-found-inside.html",
+   "published": "2026-10-06T11:02:30Z",
+   "added": "2026-10-06T14:07:58Z",
+   "also": []
+  },
+  {
+   "id": "812c2ef5a5",
+   "headline": "MALFEX campaign spreads 40,000 malicious NPM packages",
+   "summary": "Since August 2023, attackers have published eight malicious packages in the MALFEX supply chain campaign targeting NPM, accumulating 40,000 downloads. The campaign exploits the npm registry to distribute malware to developers. Organizations using affected packages should audit dependencies, update to clean versions, and monitor for suspicious behavior. npm should enhance verification mechanisms to prevent similar campaigns.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/long-running-npm-malware-campaign-accumulates-40000-downloads/",
+   "published": "2026-10-06T10:34:25Z",
+   "added": "2026-10-06T14:07:58Z",
+   "also": []
+  },
+  {
+   "id": "5480e932d2",
+   "headline": "Engineer sentenced 32 months for locking employer devices",
+   "summary": "A former core infrastructure engineer at a New Jersey industrial company was sentenced to 32 months in prison for executing a ransomware-style attack that locked over 3,000 devices on the employer's network. The insider threat resulted in significant operational disruption. Organizations should implement robust access controls and monitor privileged user activity.",
+   "severity": "high",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/engineer-sentenced-for-locking-thousands-of-devices-on-employer-network/",
+   "published": "2026-10-06T08:19:24Z",
+   "added": "2026-10-06T14:07:45Z",
+   "also": []
+  },
+  {
+   "id": "f97880d759",
+   "headline": "Atlassian Data Center critical flaw exposes files unauthenticated",
+   "summary": "A critical vulnerability CVE-2026-21589 affects 8 Atlassian Data Center products hosted on-premises. The flaw allows unauthenticated attackers to read specific files from application root directories if they know exact file paths. Atlassian rated it 9.3 CVSS. Customers should apply patches immediately and restrict network access to vulnerable instances.",
+   "severity": "critical",
+   "category": "Vulnerability",
+   "cves": [
+    "CVE-2026-21589"
+   ],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/critical-atlassian-flaw-lets.html",
+   "published": "2026-10-06T06:58:56Z",
+   "added": "2026-10-06T14:07:45Z",
+   "also": []
+  },
   {
    "id": "15810e447b",
    "headline": "ClickFix malware abuses browser cache to evade Windows limits",
@@ -15,6 +115,25 @@
    "url": "https://thehackernews.com/2026/10/clickfix-smuggles-payloads-through.html",
    "published": "2026-10-06T05:22:55Z",
    "added": "2026-10-06T06:47:57Z",
+   "also": [
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/clickfix-campaign-ukraine-lunex-stealer"
+    }
+   ]
+  },
+  {
+   "id": "c0b6f37559",
+   "headline": "ASOS hackers send unauthorized push notification to customers",
+   "summary": "London-based clothing retailer ASOS suffered an unauthorized push notification sent to customers following an apparent breach. The notification caused share prices to dive. Details remain unclear, but the incident suggests attackers gained access to the company's notification system. Customers should monitor accounts for suspicious activity and enable additional security measures on ASOS accounts.",
+   "severity": "high",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/asos-push-notification-apparently-sent-by-hackers",
+   "published": "2026-10-06T04:00:00Z",
+   "added": "2026-10-06T14:07:45Z",
    "also": []
   },
   {
@@ -47,7 +166,16 @@
    "url": "https://therecord.media/wikimedia-foundation-openai-agents-report",
    "published": "2026-10-05T21:26:00Z",
    "added": "2026-10-06T00:16:58Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/wikimedia-says-openai-agents-tried-to.html"
+    },
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/rogue-openai-agents-behind-potentially-malicious-wikipedia-edits/"
+    }
+   ]
   },
   {
    "id": "ac27d72d61",
@@ -77,7 +205,12 @@
    "url": "https://therecord.media/alleged-shinyhunters-member-detained-jordan-fbi",
    "published": "2026-10-05T19:15:00Z",
    "added": "2026-10-06T00:16:58Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/fbi-removes-accenture-contractor-after.html"
+    }
+   ]
   },
   {
    "id": "a38fefbaa9",
@@ -185,6 +318,10 @@
     {
      "source": "The Hacker News",
      "url": "https://thehackernews.com/2026/10/denmark-says-attackers-accessed-cpr.html"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/8-8-million-impacted-by-data-breach-at-denmarks-central-person-register/"
     }
    ]
   },
@@ -214,7 +351,12 @@
    "url": "https://www.securityweek.com/google-narrows-open-source-bug-bounty-amid-wave-of-invalid-automated-reports/",
    "published": "2026-10-05T14:26:00Z",
    "added": "2026-10-05T18:37:19Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/google-pauses-oss-product-bug-bounty.html"
+    }
+   ]
   },
   {
    "id": "68acfff980",
@@ -256,7 +398,12 @@
    "url": "https://therecord.media/nikkei-cyberattack-japan-data",
    "published": "2026-10-05T13:15:00Z",
    "added": "2026-10-05T18:37:19Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/nikkei-discloses-breaches-of-employees-microsoft-google-email-accounts/"
+    }
+   ]
   },
   {
    "id": "68db8daed7",
