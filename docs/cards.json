@@ -1,8 +1,52 @@
 {
- "updated": "2026-10-06T19:47:23Z",
+ "updated": "2026-10-06T23:44:43Z",
  "month_cost_usd": 0.06,
- "ai_calls_month": 10,
+ "ai_calls_month": 11,
  "cards": [
+  {
+   "id": "26ecf17f5b",
+   "headline": "FortiBleed campaign locks users ransomware entry point",
+   "summary": "FortiBleed, an ongoing credential compromise campaign targeting Fortinet firewalls and VPN gateways, can disable accounts or change passwords to lock users out and serves as an initial entry point for ransomware affiliates. FBI and Secret Service alert confirms over 400,000 firewalls were targeted. Organizations should force password resets, monitor account changes, and implement MFA on Fortinet devices.",
+   "severity": "critical",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [
+    "Fortinet"
+   ],
+   "source": "CyberScoop",
+   "url": "https://cyberscoop.com/fortibleed-fortinet-vpn-ransomware-fbi-warning/",
+   "published": "2026-10-06T21:03:58Z",
+   "added": "2026-10-06T23:44:43Z",
+   "also": []
+  },
+  {
+   "id": "20db35582f",
+   "headline": "Ninja Forms WordPress plugin XSS exploited for backdoors",
+   "summary": "Attackers exploit stored cross-site scripting vulnerabilities in Ninja Forms and WPC Product Bundles for WooCommerce plugins to compromise WordPress sites. The exploits enable installation of backdoors and creation of rogue administrator accounts. WordPress site operators should immediately update affected plugins and audit user accounts for unauthorized access.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/ninja-forms-plugin-flaw-exploited-to-hack-wordpress-sites/",
+   "published": "2026-10-06T21:00:27Z",
+   "added": "2026-10-06T23:44:43Z",
+   "also": []
+  },
+  {
+   "id": "b53f151bdb",
+   "headline": "Healthcare sector unprepared for post-quantum cryptography",
+   "summary": "A study of 2.5 million devices across 50 healthcare organizations reveals critical infrastructure lacks readiness for quantum-resistant cryptography adoption. Healthcare systems using current encryption standards face future decryption risks as quantum computing advances. Organizations should begin cryptographic inventory audits and develop migration strategies to post-quantum algorithms.",
+   "severity": "info",
+   "category": "Research",
+   "cves": [],
+   "watch": [],
+   "source": "Dark Reading",
+   "url": "https://www.darkreading.com/iot/exposed-healthcare-systems-quantum-ready",
+   "published": "2026-10-06T20:30:27Z",
+   "added": "2026-10-06T23:44:43Z",
+   "also": []
+  },
   {
    "id": "20fd106726",
    "headline": "Pwn2Own Ireland: 32 zero-days exploited on day one",
@@ -15,6 +59,20 @@
    "url": "https://www.bleepingcomputer.com/news/security/hackers-exploit-32-zero-days-on-first-day-of-pwn2own-ireland/",
    "published": "2026-10-06T19:21:53Z",
    "added": "2026-10-06T19:47:23Z",
+   "also": []
+  },
+  {
+   "id": "007c3190cf",
+   "headline": "Linux backdoors impersonate email tools in Korea Taiwan",
+   "summary": "Threat actors have deployed Linux backdoors targeting telecom and network appliances in South Korea and Taiwan, disguising malicious traffic as legitimate email services and system processes to evade detection. The backdoors use naming mimicry of real binaries as a defense evasion technique. Organizations running exposed telecom infrastructure should monitor for suspicious process names and anomalous email-like traffic patterns.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/linux-backdoors-impersonate-email.html",
+   "published": "2026-10-06T18:24:25Z",
+   "added": "2026-10-06T23:44:43Z",
    "also": []
   },
   {
@@ -43,7 +101,12 @@
    "url": "https://www.bleepingcomputer.com/news/security/fake-chatgpt-gemini-sites-steal-advertising-accounts-mfa-codes/",
    "published": "2026-10-06T15:16:44Z",
    "added": "2026-10-06T19:47:14Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/fake-chatgpt-gemini-and-claude-ad.html"
+    }
+   ]
   },
   {
    "id": "c75afb4795",
@@ -180,6 +243,10 @@
     {
      "source": "The Record",
      "url": "https://therecord.media/clickfix-campaign-ukraine-lunex-stealer"
+    },
+    {
+     "source": "Dark Reading",
+     "url": "https://www.darkreading.com/cyberattacks-data-breaches/clickfix-attacks-evolve-better-hide-malicious-payloads"
     }
    ]
   },
