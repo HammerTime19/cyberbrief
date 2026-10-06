@@ -1,8 +1,64 @@
 {
- "updated": "2026-10-06T14:08:09Z",
- "month_cost_usd": 0.04,
- "ai_calls_month": 8,
+ "updated": "2026-10-06T19:47:23Z",
+ "month_cost_usd": 0.06,
+ "ai_calls_month": 10,
  "cards": [
+  {
+   "id": "20fd106726",
+   "headline": "Pwn2Own Ireland: 32 zero-days exploited on day one",
+   "summary": "Security researchers exploited 32 zero-day vulnerabilities during the first day of Pwn2Own Ireland 2026 competition, targeting the Samsung Galaxy S26 with two successful hacks and earning $388,500 in prize money. The competition demonstrates active discovery of previously unknown flaws in consumer devices. Researchers and device makers use Pwn2Own to identify security gaps and prioritize patching efforts.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/hackers-exploit-32-zero-days-on-first-day-of-pwn2own-ireland/",
+   "published": "2026-10-06T19:21:53Z",
+   "added": "2026-10-06T19:47:23Z",
+   "also": []
+  },
+  {
+   "id": "ef90afea64",
+   "headline": "BigDiskBuster technique blocks Microsoft Defender updates",
+   "summary": "Security researchers demonstrated a proof-of-concept technique called BigDiskBuster that silently prevents Microsoft Defender updates while leaving the antivirus service running normally. The flaw creates a detection gap without requiring exploits, allowing malware to evade protection. Defenders should monitor Defender update logs and isolate machines with failed update attempts.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "Dark Reading",
+   "url": "https://www.darkreading.com/application-security/bigdiskbuster-microsoft-defender-running-blocking-updates",
+   "published": "2026-10-06T16:59:24Z",
+   "added": "2026-10-06T19:47:14Z",
+   "also": []
+  },
+  {
+   "id": "26e65fb177",
+   "headline": "Fake ChatGPT sites steal credentials and MFA codes",
+   "summary": "Attackers deployed counterfeit ChatGPT, Gemini, Claude, and Perplexity websites using browser-in-browser attacks to steal login credentials and multi-factor authentication codes from advertising account managers. The campaign targets individuals with access to ad platforms and accounts. Defenders should educate users on phishing risks and enforce stronger MFA protections.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/fake-chatgpt-gemini-sites-steal-advertising-accounts-mfa-codes/",
+   "published": "2026-10-06T15:16:44Z",
+   "added": "2026-10-06T19:47:14Z",
+   "also": []
+  },
+  {
+   "id": "c75afb4795",
+   "headline": "Osaka Metropolitan University hit by ransomware attack",
+   "summary": "Osaka Metropolitan University suffered a suspected ransomware attack that forced the institution to cancel classes and took offline internal networks, email, and administrative and academic systems. No details on the threat actor or ransom demand were disclosed. The university is investigating the incident and working to restore services.",
+   "severity": "high",
+   "category": "Ransomware",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/osaka-university-cancels-classes-ransomware",
+   "published": "2026-10-06T14:52:00Z",
+   "added": "2026-10-06T19:47:14Z",
+   "also": []
+  },
   {
    "id": "0ec2745721",
    "headline": "RMM tools abused in phishing campaigns deliver malware",
@@ -101,7 +157,12 @@
    "url": "https://thehackernews.com/2026/10/critical-atlassian-flaw-lets.html",
    "published": "2026-10-06T06:58:56Z",
    "added": "2026-10-06T14:07:45Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/atlassian-warns-of-critical-file-access-flaw-in-jira-confluence/"
+    }
+   ]
   },
   {
    "id": "15810e447b",
@@ -134,7 +195,12 @@
    "url": "https://therecord.media/asos-push-notification-apparently-sent-by-hackers",
    "published": "2026-10-06T04:00:00Z",
    "added": "2026-10-06T14:07:45Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/asos-confirms-data-breach-after-hacked-in-app-notifications/"
+    }
+   ]
   },
   {
    "id": "96873dc265",
@@ -209,6 +275,10 @@
     {
      "source": "The Hacker News",
      "url": "https://thehackernews.com/2026/10/fbi-removes-accenture-contractor-after.html"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/fbi-blames-contractors-missed-patch-for-shinyhunters-breach/"
     }
    ]
   },
@@ -370,7 +440,12 @@
    "url": "https://www.bleepingcomputer.com/news/security/south-korea-probes-bank-breaches-amid-suspected-ai-powered-attacks/",
    "published": "2026-10-05T14:22:12Z",
    "added": "2026-10-05T18:37:19Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/south-korean-bank-hacks-ai-agents"
+    }
+   ]
   },
   {
    "id": "356db830ef",
@@ -417,7 +492,12 @@
    "url": "https://www.bleepingcomputer.com/news/security/suspected-dev-of-ploutus-atm-malware-appears-in-us-court-after-arrest/",
    "published": "2026-10-05T13:01:45Z",
    "added": "2026-10-05T18:37:19Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/atm-malware-creator-appears-in-nebraska-court"
+    }
+   ]
   },
   {
    "id": "9569100024",
