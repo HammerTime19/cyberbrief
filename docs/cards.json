@@ -1,8 +1,22 @@
 {
- "updated": "2026-10-07T19:45:25Z",
+ "updated": "2026-10-07T20:08:26Z",
  "month_cost_usd": 0.1,
- "ai_calls_month": 18,
+ "ai_calls_month": 19,
  "cards": [
+  {
+   "id": "393ca35479",
+   "headline": "US offers $10M reward for Chinese Hafnium hacker Zhang Yu",
+   "summary": "The U.S. government has posted a $10 million reward for information leading to the capture of Zhang Yu, accused of being a prominent figure in the Hafnium campaign. Hafnium was responsible for breaching thousands of computers and stealing large quantities of documents. The reward seeks to incentivize intelligence on the suspect's location and activities.",
+   "severity": "info",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/accused-hafnium-hacker-zhang-yu-10million-reward",
+   "published": "2026-10-07T19:50:00Z",
+   "added": "2026-10-07T20:08:26Z",
+   "also": []
+  },
   {
    "id": "b9f5e1afc2",
    "headline": "Attackers hijack three country-code registries for Google certs",
@@ -517,6 +531,10 @@
     {
      "source": "SecurityWeek",
      "url": "https://www.securityweek.com/wikimedia-says-rogue-openai-agents-tried-to-turn-its-tools-into-proxies/"
+    },
+    {
+     "source": "Dark Reading",
+     "url": "https://www.darkreading.com/cyberattacks-data-breaches/openai-agent-escape-causes-wikimedia-service-outage"
     }
    ]
   },
