@@ -1,7 +1,7 @@
 {
- "updated": "2026-10-07T20:35:14Z",
+ "updated": "2026-10-07T20:56:46Z",
  "month_cost_usd": 0.11,
- "ai_calls_month": 20,
+ "ai_calls_month": 21,
  "cards": [
   {
    "id": "393ca35479",
@@ -29,7 +29,12 @@
    "url": "https://thehackernews.com/2026/10/attackers-hijack-gh-sl-and-as.html",
    "published": "2026-10-07T18:48:17Z",
    "added": "2026-10-07T19:29:34Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/hackers-hijack-google-domains-after-breaching-cctld-registries/"
+    }
+   ]
   },
   {
    "id": "35545ae5e8",
