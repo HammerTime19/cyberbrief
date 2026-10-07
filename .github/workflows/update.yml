@@ -32,6 +32,8 @@ jobs:
       changed: ${{ steps.commit.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main   # latest cards, even if this run waited in the queue behind another one
 
       - uses: actions/setup-python@v5
         with:
@@ -63,7 +65,7 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Update cards"
-            git pull --rebase origin main
+            git pull --rebase -X theirs origin main   # on a clash, keep this run's newer cards
             git push
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
