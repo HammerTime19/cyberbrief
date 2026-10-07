@@ -1,8 +1,22 @@
 {
- "updated": "2026-10-07T23:00:34Z",
+ "updated": "2026-10-07T23:30:29Z",
  "month_cost_usd": 0.12,
- "ai_calls_month": 24,
+ "ai_calls_month": 25,
  "cards": [
+  {
+   "id": "054bfa86a5",
+   "headline": "MonsterCloud CEO charged with defrauding ransomware victims",
+   "summary": "The owner of ransomware remediation firm MonsterCloud faces fraud charges for allegedly paying attackers directly for decryptors while falsely claiming to use proprietary recovery technology. Victims believed they were paying for data recovery services; instead, funds went to ransomware operators. The scheme undermines trust in legitimate recovery services and may have funded criminal operations.",
+   "severity": "high",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/ransomware-recovery-ceo-charged-over-secret-ransom-payments/",
+   "published": "2026-10-07T23:04:37Z",
+   "added": "2026-10-07T23:30:29Z",
+   "also": []
+  },
   {
    "id": "e63549e2e0",
    "headline": "Australia considers mandatory AI incident reporting rules",
