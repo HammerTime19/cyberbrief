@@ -3,7 +3,12 @@ name: Update CyberBrief
 on:
   schedule:
     - cron: "7,37 * * * *"   # every 30 minutes (GitHub may delay runs a few minutes)
-  workflow_dispatch:          # "Run workflow" button in the Actions tab
+  workflow_dispatch:          # "Run workflow" button in the Actions tab, or the external timer
+    inputs:
+      source:
+        description: "Set to 'timer' by the external 30-minute trigger"
+        required: false
+        default: manual
   push:
     branches: [main]
     paths: ["docs/**", "pipeline/**", ".github/workflows/**"]
@@ -61,13 +66,13 @@ jobs:
           fi
 
       - uses: actions/upload-pages-artifact@v3
-        if: steps.commit.outputs.changed == 'true' || github.event_name != 'schedule'
+        if: steps.commit.outputs.changed == 'true' || (github.event_name != 'schedule' && inputs.source != 'timer')
         with:
           path: docs
 
   deploy:
     needs: update
-    if: needs.update.outputs.changed == 'true' || github.event_name != 'schedule'
+    if: needs.update.outputs.changed == 'true' || (github.event_name != 'schedule' && inputs.source != 'timer')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
