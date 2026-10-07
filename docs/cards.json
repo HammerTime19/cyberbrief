@@ -1,7 +1,7 @@
 {
- "updated": "2026-10-07T21:00:32Z",
- "month_cost_usd": 0.11,
- "ai_calls_month": 21,
+ "updated": "2026-10-07T21:30:31Z",
+ "month_cost_usd": 0.12,
+ "ai_calls_month": 22,
  "cards": [
   {
    "id": "393ca35479",
@@ -224,6 +224,10 @@
     {
      "source": "The Record",
      "url": "https://therecord.media/fortibleed-warning-fbi-secret-service"
+    },
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/fbi-ongoing-fortibleed-attacks-lock-out-fortigate-vpn-admins/"
     }
    ]
   },
