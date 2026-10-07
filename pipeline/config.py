@@ -58,10 +58,6 @@ NOTIFY_MAX_PER_RUN = 4    # extra critical stories are grouped into one alert
 QUIET_HOURS = (23, 6)     # 11pm to 6am: alerts arrive silently
 DIGEST_HOUR = 7           # morning summary notification (local hour); None to disable
 
-# Weekly recap card ("Week in security"), written from the week's critical and high stories
-RECAP_WEEKDAY = 6         # 0 = Monday ... 6 = Sunday; None to disable
-RECAP_HOUR = 18           # local hour on that day
-
 # CVE details: CVSS from NVD, exploit probability from FIRST EPSS, KEV status from CISA
 CVE_LOOKUPS_PER_RUN = 12  # NVD allows ~5 requests per 30 seconds without a key
 CVE_RECHECK_HOURS = 6     # new CVEs often have no score yet; check again after this long

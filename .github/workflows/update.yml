@@ -9,10 +9,6 @@ on:
         description: "Set to 'timer' by the external 30-minute trigger"
         required: false
         default: manual
-      recap:
-        description: "Write a weekly recap card now (for testing)"
-        type: boolean
-        default: false
   push:
     branches: [main]
     paths: ["docs/**", "pipeline/**", ".github/workflows/**"]
@@ -55,7 +51,6 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           NTFY_ADMIN_TOPIC: ${{ secrets.NTFY_ADMIN_TOPIC }}
           APP_URL: ${{ vars.APP_URL }}
-          FORCE_RECAP: ${{ inputs.recap }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Commit new cards

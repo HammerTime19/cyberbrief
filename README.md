@@ -36,9 +36,8 @@ Free-tier limits are set by GitHub and Google and can change. If a run hits a li
 - Tapping a notification opens the app on that story.
 - On a computer, use the arrow keys or j/k.
 
-## Weekly recap, CVE details and owner alerts
+## CVE details, owner alerts and day dividers
 
-- **Weekly recap:** every Sunday at 6pm (`RECAP_WEEKDAY`, `RECAP_HOUR`), the AI writes a "Week in security" card with 5 bullets from the week's critical and high stories, each linking to its card. To make one now, run the workflow with "Write a weekly recap card now" ticked.
 - **CVE details:** cards that mention CVEs show the CVSS score (NVD), the chance of exploitation in the next 30 days (FIRST EPSS) and an "Exploited" tag for CVEs in CISA's KEV catalog. New CVEs often have no score yet; they are checked again every 6 hours for a week. No keys needed.
 - **Owner alerts:** add a repository secret `NTFY_ADMIN_TOPIC` with a second, private ntfy topic and subscribe to it yourself. You get an alert when a run fails (and when it recovers), when AI summaries fail (for example, out of credit), or when a feed has been down for about 3 hours. Readers subscribed to `NTFY_TOPIC` never see these.
 - **Day dividers:** the app groups cards by day with a divider screen between days, and has Today and Yesterday filters.

@@ -4,43 +4,6 @@
  "ai_calls_month": 20,
  "cards": [
   {
-   "id": "recap-2026-10-07",
-   "kind": "recap",
-   "headline": "Critical vulnerabilities drive widespread exploitation wave",
-   "summary": "Week dominated by critical RCE flaws in enterprise software, major population data breaches, and active exploitation campaigns targeting infrastructure and development tools.",
-   "points": [
-    {
-     "text": "LMCache, SonicWall SMA1000, Atlassian Data Center, and Rejetto HFS all have critical unauthenticated RCE flaws being actively scanned or exploited; patch immediately or restrict network access.",
-     "id": "35545ae5e8"
-    },
-    {
-     "text": "Arizona Supreme Court and Denmark population registry breaches exposed millions of records; residents should monitor for identity theft and consider credit monitoring.",
-     "id": "4e888681b7"
-    },
-    {
-     "text": "FortiBleed campaign compromised over 400,000 firewalls and serves as ransomware entry point; force password resets, monitor account changes, and implement MFA on Fortinet devices.",
-     "id": "26ecf17f5b"
-    },
-    {
-     "text": "Iranian cyber actors attacked US water infrastructure across 12 states with zero-day exploits; prioritize critical infrastructure hardening and implement AI-assisted threat detection.",
-     "id": "22036833f2"
-    },
-    {
-     "text": "PoeLLM botnet compromised 3,400 open-source servers using GitHub-hosted poems for C2; audit systems for compromise and implement egress filtering to detect suspicious patterns.",
-     "id": "72f2798932"
-    }
-   ],
-   "severity": "info",
-   "category": "Weekly recap",
-   "cves": [],
-   "watch": [],
-   "source": "CyberBrief",
-   "url": "https://hammertime19.github.io/cyberbrief/",
-   "published": "2026-10-07T20:31:24Z",
-   "added": "2026-10-07T20:31:24Z",
-   "also": []
-  },
-  {
    "id": "393ca35479",
    "headline": "US offers $10M reward for Chinese Hafnium hacker Zhang Yu",
    "summary": "The U.S. government has posted a $10 million reward for information leading to the capture of Zhang Yu, accused of being a prominent figure in the Hafnium campaign. Hafnium was responsible for breaching thousands of computers and stealing large quantities of documents. The reward seeks to incentivize intelligence on the suspect's location and activities.",

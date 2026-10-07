@@ -424,61 +424,6 @@ def enrich_cves(cards):
     log(f"CVE details: {looked_up} NVD lookups, {len(epss)} EPSS scores")
 
 
-# ---------- weekly recap ----------
-
-RECAP_PROMPT = """You write the weekly recap card for CyberBrief, a cybersecurity news app for SOC analysts.
-
-You receive JSON with the past week's most important cards (id, severity, category, headline, summary).
-
-Return only a JSON object, with no prose and no code fences:
-{"headline": "...", "summary": "...", "points": [{"text": "...", "id": "<card id>"}]}
-
-- headline: at most 8 words naming the week's dominant theme. No clickbait, no trailing period.
-- summary: one sentence, at most 30 words, on the overall shape of the week.
-- points: exactly 5 bullets, most important first. Each is one sentence of at most 25 words saying what happened and why it matters to defenders, and the id of the card it is based on. Combine related cards into one point when they are part of the same story.
-Use only facts in the cards; never invent details."""
-
-
-def make_recap(ai, cards, usage, price):
-    week_ago = iso(now() - dt.timedelta(days=7))
-    week = [c for c in cards if c.get("kind") != "recap" and c["published"] >= week_ago]
-    picked = [c for c in week if c["severity"] in ("critical", "high")]
-    if len(picked) < 5:
-        picked = week
-    if len(picked) < 3:
-        log("Weekly recap: not enough stories this week")
-        return None
-    picked = sorted(picked, key=lambda c: SEVERITIES.index(c["severity"]))[:40]
-    payload = [{"id": c["id"], "severity": c["severity"], "category": c["category"],
-                "headline": c["headline"], "summary": c["summary"]} for c in picked]
-    text, tin, tout = call_model(ai, RECAP_PROMPT, json.dumps(payload, ensure_ascii=False), 1200)
-    usage["input"] += tin
-    usage["output"] += tout
-    usage["calls"] += 1
-    usage["cost"] += tin / 1e6 * price[0] + tout / 1e6 * price[1]
-    r = parse_model_json(text)
-    ids = {c["id"] for c in picked}
-    points = [{"text": clean(p.get("text"), 300), "id": p.get("id") if p.get("id") in ids else None}
-              for p in r.get("points", []) if isinstance(p, dict) and p.get("text")][:6]
-    if not points:
-        raise ValueError("recap had no points")
-    stamp = iso(now())
-    return {
-        "id": "recap-" + stamp[:10], "kind": "recap",
-        "headline": clean(r.get("headline"), 120) or "The week in security",
-        "summary": clean(r.get("summary"), 300), "points": points,
-        "severity": "info", "category": "Weekly recap", "cves": [], "watch": [],
-        "source": "CyberBrief", "url": app_url(), "published": stamp, "added": stamp, "also": [],
-    }
-
-
-def recap_due(state, local):
-    if os.environ.get("FORCE_RECAP") == "true":
-        return True
-    return (config.RECAP_WEEKDAY is not None and local.weekday() == config.RECAP_WEEKDAY
-            and local.hour >= config.RECAP_HOUR and state.get("last_recap") != local.date().isoformat())
-
-
 # ---------- main ----------
 
 def main():
@@ -529,8 +474,7 @@ def main():
 
     for start in range(0, len(queue), config.BATCH_SIZE):
         batch = queue[start:start + config.BATCH_SIZE]
-        recent = sorted((c for c in cards if c.get("kind") != "recap"),
-                        key=lambda c: c["published"], reverse=True)[:40]
+        recent = sorted(cards, key=lambda c: c["published"], reverse=True)[:40]
         if start:
             time.sleep(config.CALL_DELAY_SECONDS)
         try:
@@ -595,21 +539,6 @@ def main():
     enrich_cves(cards)
 
     local = now().astimezone(ZoneInfo(config.TIMEZONE))
-    if recap_due(state, local):
-        try:
-            recap = make_recap(ai, cards, usage, (price_in, price_out))
-        except Exception as e:
-            log(f"  ! weekly recap failed: {e}")
-            admin_alert("weekly recap failed", str(e)[:300], state, key="recap", every_hours=6)
-            recap = None
-        if recap:
-            if os.environ.get("FORCE_RECAP") != "true":
-                state["last_recap"] = local.date().isoformat()
-            cards = [c for c in cards if c["id"] != recap["id"]] + [recap]
-            log(f"Weekly recap: {recap['headline']}")
-            ntfy(f"Week in security: {recap['headline']}",
-                 "\n".join("- " + p["text"] for p in recap["points"][:3]),
-                 priority=3, tags=["newspaper"], click=f"{app_url()}#{recap['id']}" if app_url() else None)
 
     # prune old cards and seen ids
     keep_after = iso(now() - dt.timedelta(days=config.RETENTION_DAYS))
