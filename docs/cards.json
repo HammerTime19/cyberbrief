@@ -1,8 +1,22 @@
 {
- "updated": "2026-10-06T23:44:43Z",
- "month_cost_usd": 0.06,
- "ai_calls_month": 11,
+ "updated": "2026-10-07T05:43:51Z",
+ "month_cost_usd": 0.07,
+ "ai_calls_month": 12,
  "cards": [
+  {
+   "id": "4e888681b7",
+   "headline": "Arizona Supreme Court breach exposes 1 million people",
+   "summary": "The Arizona Supreme Court suffered a cyberattack resulting in the theft of personal information for over 1 million individuals, with records dating back 30 years. The breach exposed sensitive court data spanning decades. No immediate details on the attack vector or responsible threat actor have been disclosed. Affected individuals should monitor for identity theft and consider credit freezes.",
+   "severity": "critical",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/personal-information-for-over-1-million-people-stolen-in-a-cyberattack-on-arizonas-court-system/",
+   "published": "2026-10-07T01:32:58Z",
+   "added": "2026-10-07T05:43:51Z",
+   "also": []
+  },
   {
    "id": "26ecf17f5b",
    "headline": "FortiBleed campaign locks users ransomware entry point",
