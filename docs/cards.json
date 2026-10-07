@@ -1,8 +1,22 @@
 {
- "updated": "2026-10-07T22:00:37Z",
+ "updated": "2026-10-07T22:30:30Z",
  "month_cost_usd": 0.12,
- "ai_calls_month": 23,
+ "ai_calls_month": 24,
  "cards": [
+  {
+   "id": "e63549e2e0",
+   "headline": "Australia considers mandatory AI incident reporting rules",
+   "summary": "Australia's government is exploring regulatory requirements for frontier AI companies to report incidents, prompted by an agentic attack on its Medicare systems. The policy development reflects concerns about autonomous AI systems operating in critical infrastructure. No timeline or specific mandates have been announced yet. Organizations should monitor developments as Australia shapes AI accountability frameworks.",
+   "severity": "info",
+   "category": "Policy",
+   "cves": [],
+   "watch": [],
+   "source": "Dark Reading",
+   "url": "https://www.darkreading.com/cybersecurity-operations/australian-govt-ai-incident-reporting",
+   "published": "2026-10-07T21:42:55Z",
+   "added": "2026-10-07T22:30:30Z",
+   "also": []
+  },
   {
    "id": "393ca35479",
    "headline": "US offers $10M reward for Chinese Hafnium hacker Zhang Yu",
