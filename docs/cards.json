@@ -1,8 +1,85 @@
 {
- "updated": "2026-10-07T05:43:51Z",
- "month_cost_usd": 0.07,
- "ai_calls_month": 12,
+ "updated": "2026-10-07T13:11:41Z",
+ "month_cost_usd": 0.08,
+ "ai_calls_month": 15,
  "cards": [
+  {
+   "id": "f28cb86dc6",
+   "headline": "SonicWall fixes maximum-severity SSRF in SMA1000 gateways",
+   "summary": "SonicWall released hotfixes for a maximum-severity server-side request forgery (SSRF) vulnerability in SMA1000 series appliances. The flaw could allow attackers to access internal resources and perform unauthorized actions. Organizations using affected SMA1000 gateways should apply patches immediately.",
+   "severity": "critical",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [
+    "SonicWall"
+   ],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/sonicwall-warns-of-max-severity-ssrf-flaw-in-sma1000-gateways/",
+   "published": "2026-10-07T11:37:07Z",
+   "added": "2026-10-07T13:11:33Z",
+   "also": []
+  },
+  {
+   "id": "2322918b8a",
+   "headline": "Chrome 155 patches 247 vulnerabilities including four critical",
+   "summary": "Google released Chrome 155 with patches for 247 vulnerabilities, including four critical-severity use-after-free flaws in Chromecast, Browser, Navigation, and Track components. The update addresses memory safety issues that could enable remote code execution. Users should update immediately to the latest version.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/chrome-155-update-patches-247-vulnerabilities/",
+   "published": "2026-10-07T10:51:57Z",
+   "added": "2026-10-07T13:11:33Z",
+   "also": []
+  },
+  {
+   "id": "e8af94180f",
+   "headline": "Advantest confirms ransomware attack exposed personal data",
+   "summary": "Advantest Corporation confirmed a ransomware attack earlier in 2026 compromised personally identifiable information of affected individuals. The company is notifying victims of the breach. No additional details on scope or remediation were disclosed. Affected individuals should monitor accounts for fraud.",
+   "severity": "high",
+   "category": "Ransomware",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/advantest-confirms-personal-information-stolen-in-ransomware-attack/",
+   "published": "2026-10-07T10:27:52Z",
+   "added": "2026-10-07T13:11:22Z",
+   "also": [
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/advantest-discloses-data-breach-months-after-ransomware-attack/"
+    }
+   ]
+  },
+  {
+   "id": "1958c70e74",
+   "headline": "100+ websites inject LunexStealer via fake Cloudflare checks",
+   "summary": "CERT-UA identified over 100 compromised websites injected with malicious JavaScript serving LunexStealer information-stealing malware. The campaign, attributed to threat actor UAC-0277, was observed in September 2026. Victims visiting these sites risk credential and data theft. Organizations should block known malicious domains and educate users on phishing risks.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/100-compromised-websites-use-fake.html",
+   "published": "2026-10-07T06:57:54Z",
+   "added": "2026-10-07T13:11:22Z",
+   "also": []
+  },
+  {
+   "id": "acc859ede7",
+   "headline": "Android October 2026 patches 25 vulnerabilities",
+   "summary": "Google released October security updates for Android, resolving 25 vulnerabilities including a critical privilege escalation flaw in the System component. The patch addresses a high-severity issue that could allow local attackers to gain elevated privileges. Users should install updates immediately via Google Play System Update or their device manufacturer.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/androids-october-2026-updates-patch-25-vulnerabilities/",
+   "published": "2026-10-07T06:55:52Z",
+   "added": "2026-10-07T13:11:22Z",
+   "also": []
+  },
   {
    "id": "4e888681b7",
    "headline": "Arizona Supreme Court breach exposes 1 million people",
@@ -31,7 +108,16 @@
    "url": "https://cyberscoop.com/fortibleed-fortinet-vpn-ransomware-fbi-warning/",
    "published": "2026-10-06T21:03:58Z",
    "added": "2026-10-06T23:44:43Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/fbi-warns-fortibleed-remains-active.html"
+    },
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/fortibleed-warning-fbi-secret-service"
+    }
+   ]
   },
   {
    "id": "20db35582f",
@@ -238,6 +324,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/atlassian-warns-of-critical-file-access-flaw-in-jira-confluence/"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/atlassian-patches-critical-vulnerability-affecting-8-products/"
     }
    ]
   },
@@ -280,6 +370,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/asos-confirms-data-breach-after-hacked-in-app-notifications/"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/asos-confirms-cyberattack-data-breach/"
     }
    ]
   },
@@ -321,6 +415,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/rogue-openai-agents-behind-potentially-malicious-wikipedia-edits/"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/wikimedia-says-rogue-openai-agents-tried-to-turn-its-tools-into-proxies/"
     }
    ]
   },
