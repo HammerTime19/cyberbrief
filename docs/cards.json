@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-07T20:08:26Z",
+ "updated": "2026-10-07T20:30:00Z",
  "month_cost_usd": 0.1,
  "ai_calls_month": 19,
  "cards": [
@@ -441,7 +441,17 @@
      "source": "SANS ISC",
      "url": "https://isc.sans.edu/diary/rss/33406"
     }
-   ]
+   ],
+   "cve_info": {
+    "CVE-2026-21589": {
+     "kev": false,
+     "epss": 0.01755,
+     "pct": 0.77225,
+     "cvss": 9.3,
+     "sev": "critical"
+    }
+   },
+   "cve_checked": "2026-10-07T20:29:39Z"
   },
   {
    "id": "15810e447b",
@@ -505,7 +515,17 @@
    "url": "https://cyberscoop.com/citrix-netscaler-third-exploited-zero-day-vulnerability/",
    "published": "2026-10-05T23:07:17Z",
    "added": "2026-10-06T00:16:58Z",
-   "also": []
+   "also": [],
+   "cve_info": {
+    "CVE-2026-88779": {
+     "kev": true,
+     "epss": 0.00592,
+     "pct": 0.46593,
+     "cvss": 7.5,
+     "sev": "high"
+    }
+   },
+   "cve_checked": "2026-10-07T20:29:45Z"
   },
   {
    "id": "ef0c1b9d56",
@@ -552,7 +572,17 @@
    "url": "https://www.bleepingcomputer.com/news/security/rejetto-hfs-servers-now-actively-scanned-for-critical-rce-flaw/",
    "published": "2026-10-05T20:20:05Z",
    "added": "2026-10-06T00:16:58Z",
-   "also": []
+   "also": [],
+   "cve_info": {
+    "CVE-2026-61500": {
+     "kev": false,
+     "epss": 0.00987,
+     "pct": 0.61241,
+     "cvss": 9.8,
+     "sev": "critical"
+    }
+   },
+   "cve_checked": "2026-10-07T20:29:53Z"
   },
   {
    "id": "76475e6020",
@@ -641,7 +671,17 @@
    "url": "https://thehackernews.com/2026/10/microsoft-exchange-flaw-lets.html",
    "published": "2026-10-05T16:21:52Z",
    "added": "2026-10-05T18:37:34Z",
-   "also": []
+   "also": [],
+   "cve_info": {
+    "CVE-2026-96940": {
+     "kev": false,
+     "epss": 0.00496,
+     "pct": 0.40558,
+     "cvss": 8.8,
+     "sev": "high"
+    }
+   },
+   "cve_checked": "2026-10-07T20:30:00Z"
   },
   {
    "id": "1b8095594e",
