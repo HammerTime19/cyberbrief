@@ -9,6 +9,10 @@ on:
         description: "Set to 'timer' by the external 30-minute trigger"
         required: false
         default: manual
+      recap:
+        description: "Write a weekly recap card now (for testing)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ["docs/**", "pipeline/**", ".github/workflows/**"]
@@ -18,6 +22,7 @@ permissions:
   pages: write
   id-token: write
   models: read      # free AI summaries through GitHub Models
+  actions: read     # lets the health job see whether the previous run failed
 
 concurrency:
   group: cyberbrief
@@ -26,7 +31,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
     steps:
@@ -48,7 +53,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_ADMIN_TOPIC: ${{ secrets.NTFY_ADMIN_TOPIC }}
           APP_URL: ${{ vars.APP_URL }}
+          FORCE_RECAP: ${{ inputs.recap }}
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Commit new cards
         id: commit
@@ -80,3 +88,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  health:
+    # Alerts the owner (NTFY_ADMIN_TOPIC) on the first failed run, and again when runs recover
+    needs: [update, deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report failures and recoveries
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ADMIN_TOPIC: ${{ secrets.NTFY_ADMIN_TOPIC }}
+          FAILED: ${{ contains(fromJSON('["failure","cancelled"]'), needs.update.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$ADMIN_TOPIC" ]; then echo "NTFY_ADMIN_TOPIC not set"; exit 0; fi
+          prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow update.yml --status completed -L 1 --json conclusion --jq '.[0].conclusion // ""')
+          echo "this run failed: $FAILED, previous run: $prev"
+          if [ "$FAILED" = true ] && [ "$prev" != failure ]; then
+            curl -s -H "Title: CyberBrief: update failed" -H "Priority: 4" -H "Tags: rotating_light" -H "Click: $RUN_URL"               -d "A run failed (update: ${{ needs.update.result }}, deploy: ${{ needs.deploy.result }}). Tap to open the log. You will get another alert when it recovers."               "https://ntfy.sh/$ADMIN_TOPIC"
+          elif [ "$FAILED" != true ] && [ "$prev" = failure ]; then
+            curl -s -H "Title: CyberBrief: updates recovered" -H "Tags: white_check_mark" -H "Click: $RUN_URL"               -d "Runs are succeeding again." "https://ntfy.sh/$ADMIN_TOPIC"
+          fi

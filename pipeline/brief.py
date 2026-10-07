@@ -105,12 +105,17 @@ def app_url():
 
 # ---------- fetching ----------
 
+feed_errors = {}   # feed name -> error text, for this run
+kev_cves = set()   # every CVE in the CISA KEV catalog
+
+
 def fetch_rss(name, url):
     try:
         resp = requests.get(url, headers=HEADERS, timeout=20)
         resp.raise_for_status()
     except requests.RequestException as e:
         log(f"  ! {name}: {e}")
+        feed_errors[name] = str(e)[:200]
         return []
     feed = feedparser.parse(resp.content)
     items = []
@@ -139,7 +144,9 @@ def fetch_kev():
         vulns = resp.json().get("vulnerabilities", [])
     except (requests.RequestException, ValueError) as e:
         log(f"  ! CISA KEV: {e}")
+        feed_errors["CISA KEV"] = str(e)[:200]
         return []
+    kev_cves.update(v.get("cveID", "") for v in vulns)
     cutoff = now() - dt.timedelta(hours=config.MAX_ITEM_AGE_HOURS)
     items = []
     for v in vulns:
@@ -249,10 +256,10 @@ def summarize(name, batch, recent_cards):
 
 # ---------- notifications ----------
 
-def ntfy(title, message, priority=3, tags=None, click=None):
-    topic = os.environ.get("NTFY_TOPIC")
+def ntfy(title, message, priority=3, tags=None, click=None, topic_var="NTFY_TOPIC"):
+    topic = os.environ.get(topic_var)
     if not topic:
-        log("  (NTFY_TOPIC not set, skipping notification)")
+        log(f"  ({topic_var} not set, skipping notification: {title})")
         return
     server = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
     body = {"topic": topic, "title": title[:250], "message": message[:3500],
@@ -264,6 +271,38 @@ def ntfy(title, message, priority=3, tags=None, click=None):
         log(f"  > notified: {title}")
     except requests.RequestException as e:
         log(f"  ! notification failed: {e}")
+
+
+def admin_alert(title, message, state, key=None, every_hours=None):
+    """Problem report for the owner only (NTFY_ADMIN_TOPIC). With key and every_hours,
+    the same problem is reported at most once per that many hours."""
+    if key and every_hours:
+        sent = state.setdefault("health", {}).setdefault("alerted", {})
+        if key in sent and parse_iso(sent[key]) > now() - dt.timedelta(hours=every_hours):
+            return
+        sent[key] = iso(now())
+    run = os.environ.get("GITHUB_RUN_URL")
+    ntfy(f"CyberBrief: {title}", message + (f"\n{run}" if run else ""),
+         priority=4, tags=["wrench"], click=run, topic_var="NTFY_ADMIN_TOPIC")
+
+
+def check_feed_health(state):
+    fails = state.setdefault("health", {}).setdefault("feeds", {})
+    names = [name for name, _ in config.FEEDS] + ["CISA KEV"]
+    for name in names:
+        before = fails.get(name, 0)
+        if name in feed_errors:
+            fails[name] = before + 1
+            if fails[name] == config.FEED_DOWN_AFTER_RUNS:
+                admin_alert(f"feed down: {name}",
+                            f"{name} has failed {fails[name]} runs in a row. Last error: {feed_errors[name]}", state)
+        else:
+            if before >= config.FEED_DOWN_AFTER_RUNS:
+                admin_alert(f"feed back: {name}", f"{name} is working again.", state)
+            fails.pop(name, None)
+    for name in list(fails):  # forget feeds removed from config
+        if name not in names:
+            fails.pop(name)
 
 
 def in_quiet_hours(local):
@@ -311,6 +350,135 @@ def send_digest(cards, state, local):
          priority=3, tags=["newspaper"], click=app_url() or None)
 
 
+# ---------- CVE details ----------
+
+NVD_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+EPSS_URL = "https://api.first.org/data/v1/epss"
+
+
+def nvd_cvss(cve):
+    """Returns (score, severity), (None, None) when NVD has no score yet. Raises on HTTP errors."""
+    resp = requests.get(NVD_URL, params={"cveId": cve}, headers=HEADERS, timeout=30)
+    resp.raise_for_status()
+    for v in resp.json().get("vulnerabilities", []):
+        metrics = v.get("cve", {}).get("metrics", {})
+        for key in ("cvssMetricV31", "cvssMetricV40", "cvssMetricV30"):
+            entries = sorted(metrics.get(key, []), key=lambda m: m.get("type") != "Primary")
+            if entries:
+                data = entries[0].get("cvssData", {})
+                return data.get("baseScore"), (data.get("baseSeverity") or "").lower() or None
+    return None, None
+
+
+def epss_scores(cves):
+    """Returns {cve: (probability, percentile)} for the CVEs FIRST has scored."""
+    if not cves:
+        return {}
+    try:
+        resp = requests.get(EPSS_URL, params={"cve": ",".join(sorted(cves))}, headers=HEADERS, timeout=30)
+        resp.raise_for_status()
+        return {d["cve"]: (float(d["epss"]), float(d["percentile"])) for d in resp.json().get("data", [])}
+    except (requests.RequestException, ValueError, KeyError) as e:
+        log(f"  ! EPSS: {e}")
+        return {}
+
+
+def enrich_cves(cards):
+    """Adds cve_info {cve: {cvss, sev, epss, pct, kev}} to cards, newest first, within the NVD budget."""
+    recheck_before = iso(now() - dt.timedelta(hours=config.CVE_RECHECK_HOURS))
+    too_old = iso(now() - dt.timedelta(days=config.CVE_RECHECK_DAYS))
+    todo = []
+    for c in sorted(cards, key=lambda c: c["published"], reverse=True):
+        info = c.setdefault("cve_info", {}) if c.get("cves") else None
+        if info is None:
+            continue
+        for cve in c["cves"]:  # KEV status is free to refresh every run
+            info.setdefault(cve, {})["kev"] = cve in kev_cves
+        missing = any(info[cve].get("cvss") is None for cve in c["cves"])
+        checked = c.get("cve_checked")
+        if not checked or (missing and checked < recheck_before and c["published"] > too_old):
+            todo.append(c)
+    if not todo:
+        return
+
+    budget, looked_up = config.CVE_LOOKUPS_PER_RUN, 0
+    epss = epss_scores({cve for c in todo for cve in c["cves"]})
+    for c in todo:
+        for cve in c["cves"]:
+            entry = c["cve_info"][cve]
+            if cve in epss:
+                entry["epss"], entry["pct"] = epss[cve]
+            if entry.get("cvss") is None and budget > 0:
+                if looked_up:
+                    time.sleep(6.5)  # NVD: ~5 requests per 30 seconds without an API key
+                budget -= 1
+                looked_up += 1
+                try:
+                    entry["cvss"], entry["sev"] = nvd_cvss(cve)
+                except requests.RequestException as e:
+                    log(f"  ! NVD {cve}: {e}")
+                    budget = 0  # NVD is busy or rate limiting: try again next run
+        c["cve_checked"] = iso(now())
+        if budget <= 0:
+            break
+    log(f"CVE details: {looked_up} NVD lookups, {len(epss)} EPSS scores")
+
+
+# ---------- weekly recap ----------
+
+RECAP_PROMPT = """You write the weekly recap card for CyberBrief, a cybersecurity news app for SOC analysts.
+
+You receive JSON with the past week's most important cards (id, severity, category, headline, summary).
+
+Return only a JSON object, with no prose and no code fences:
+{"headline": "...", "summary": "...", "points": [{"text": "...", "id": "<card id>"}]}
+
+- headline: at most 8 words naming the week's dominant theme. No clickbait, no trailing period.
+- summary: one sentence, at most 30 words, on the overall shape of the week.
+- points: exactly 5 bullets, most important first. Each is one sentence of at most 25 words saying what happened and why it matters to defenders, and the id of the card it is based on. Combine related cards into one point when they are part of the same story.
+Use only facts in the cards; never invent details."""
+
+
+def make_recap(ai, cards, usage, price):
+    week_ago = iso(now() - dt.timedelta(days=7))
+    week = [c for c in cards if c.get("kind") != "recap" and c["published"] >= week_ago]
+    picked = [c for c in week if c["severity"] in ("critical", "high")]
+    if len(picked) < 5:
+        picked = week
+    if len(picked) < 3:
+        log("Weekly recap: not enough stories this week")
+        return None
+    picked = sorted(picked, key=lambda c: SEVERITIES.index(c["severity"]))[:40]
+    payload = [{"id": c["id"], "severity": c["severity"], "category": c["category"],
+                "headline": c["headline"], "summary": c["summary"]} for c in picked]
+    text, tin, tout = call_model(ai, RECAP_PROMPT, json.dumps(payload, ensure_ascii=False), 1200)
+    usage["input"] += tin
+    usage["output"] += tout
+    usage["calls"] += 1
+    usage["cost"] += tin / 1e6 * price[0] + tout / 1e6 * price[1]
+    r = parse_model_json(text)
+    ids = {c["id"] for c in picked}
+    points = [{"text": clean(p.get("text"), 300), "id": p.get("id") if p.get("id") in ids else None}
+              for p in r.get("points", []) if isinstance(p, dict) and p.get("text")][:6]
+    if not points:
+        raise ValueError("recap had no points")
+    stamp = iso(now())
+    return {
+        "id": "recap-" + stamp[:10], "kind": "recap",
+        "headline": clean(r.get("headline"), 120) or "The week in security",
+        "summary": clean(r.get("summary"), 300), "points": points,
+        "severity": "info", "category": "Weekly recap", "cves": [], "watch": [],
+        "source": "CyberBrief", "url": app_url(), "published": stamp, "added": stamp, "also": [],
+    }
+
+
+def recap_due(state, local):
+    if os.environ.get("FORCE_RECAP") == "true":
+        return True
+    return (config.RECAP_WEEKDAY is not None and local.weekday() == config.RECAP_WEEKDAY
+            and local.hour >= config.RECAP_HOUR and state.get("last_recap") != local.date().isoformat())
+
+
 # ---------- main ----------
 
 def main():
@@ -330,6 +498,7 @@ def main():
 
     log("Fetching feeds")
     items = [it for name, url in config.FEEDS for it in fetch_rss(name, url)] + fetch_kev()
+    check_feed_health(state)
 
     cutoff = iso(now() - dt.timedelta(hours=config.MAX_ITEM_AGE_HOURS))
     unique = {}
@@ -356,10 +525,12 @@ def main():
     usage.setdefault("cost", 0.0)
     price_in, price_out = config.PRICES.get(ai, (0, 0))
     new_cards = []
+    ai_errors = []
 
     for start in range(0, len(queue), config.BATCH_SIZE):
         batch = queue[start:start + config.BATCH_SIZE]
-        recent = sorted(cards, key=lambda c: c["published"], reverse=True)[:40]
+        recent = sorted((c for c in cards if c.get("kind") != "recap"),
+                        key=lambda c: c["published"], reverse=True)[:40]
         if start:
             time.sleep(config.CALL_DELAY_SECONDS)
         try:
@@ -369,6 +540,7 @@ def main():
             break
         except Exception as e:  # leave the batch unseen so the next run retries it
             log(f"  ! summarize failed: {e}")
+            ai_errors.append(str(e)[:300])
             continue
         usage["input"] += tin
         usage["output"] += tout
@@ -415,6 +587,29 @@ def main():
             seen.setdefault(it["id"], iso(now()))
 
     log(f"{len(new_cards)} new cards")
+    if ai_errors:
+        admin_alert("AI summaries failing",
+                    f"{len(ai_errors)} batch(es) failed; stories will be retried. Error: {ai_errors[0]}",
+                    state, key="ai", every_hours=6)
+
+    enrich_cves(cards)
+
+    local = now().astimezone(ZoneInfo(config.TIMEZONE))
+    if recap_due(state, local):
+        try:
+            recap = make_recap(ai, cards, usage, (price_in, price_out))
+        except Exception as e:
+            log(f"  ! weekly recap failed: {e}")
+            admin_alert("weekly recap failed", str(e)[:300], state, key="recap", every_hours=6)
+            recap = None
+        if recap:
+            if os.environ.get("FORCE_RECAP") != "true":
+                state["last_recap"] = local.date().isoformat()
+            cards = [c for c in cards if c["id"] != recap["id"]] + [recap]
+            log(f"Weekly recap: {recap['headline']}")
+            ntfy(f"Week in security: {recap['headline']}",
+                 "\n".join("- " + p["text"] for p in recap["points"][:3]),
+                 priority=3, tags=["newspaper"], click=f"{app_url()}#{recap['id']}" if app_url() else None)
 
     # prune old cards and seen ids
     keep_after = iso(now() - dt.timedelta(days=config.RETENTION_DAYS))
@@ -427,7 +622,6 @@ def main():
     state["usage"] = {k: v for k, v in state["usage"].items() if k >= (now() - dt.timedelta(days=62)).strftime("%Y-%m")}
     log(f"Month to date: {usage['calls']} calls, {usage['input']:,} in / {usage['output']:,} out tokens, ${cost:.2f}")
 
-    local = now().astimezone(ZoneInfo(config.TIMEZONE))
     if not first_run:
         send_alerts(new_cards, local)
     send_digest(cards, state, local)
