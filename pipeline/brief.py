@@ -305,6 +305,38 @@ def check_feed_health(state):
             fails.pop(name)
 
 
+def send_cost_reports(state, local, ai):
+    """Weekly month-to-date report, a final report for last month, and a budget alert, all to the owner."""
+    months = state.get("usage", {})
+    this_month = now().strftime("%Y-%m")
+    cur = months.get(this_month, {})
+    model = config.MODELS.get(ai, ai)
+
+    def summary(u):
+        return f"${u.get('cost', 0):.2f} estimated, {u.get('calls', 0):,} AI calls, {u.get('cards', 0):,} new cards"
+
+    last_month = (now().replace(day=1) - dt.timedelta(days=1)).strftime("%Y-%m")
+    if state.get("last_month_report") != last_month:
+        state["last_month_report"] = last_month
+        if last_month in months:
+            name = dt.datetime.strptime(last_month, "%Y-%m").strftime("%B %Y")
+            ntfy(f"Intel60 spending: {name}", f"{summary(months[last_month])}. Model: {model}. "
+                 "Exact bill: console.anthropic.com > Usage", priority=3, tags=["moneybag"],
+                 topic_var="NTFY_ADMIN_TOPIC")
+
+    if (config.COST_REPORT_WEEKDAY is not None and local.weekday() == config.COST_REPORT_WEEKDAY
+            and local.hour >= config.COST_REPORT_HOUR and state.get("last_week_report") != local.date().isoformat()):
+        state["last_week_report"] = local.date().isoformat()
+        ntfy("Intel60 spending this month", f"Month to date: {summary(cur)}.", priority=2,
+             tags=["moneybag"], topic_var="NTFY_ADMIN_TOPIC")
+
+    if (config.BUDGET_ALERT_USD is not None and cur.get("cost", 0) >= config.BUDGET_ALERT_USD
+            and state.get("budget_alerted") != this_month):
+        state["budget_alerted"] = this_month
+        admin_alert(f"spending passed ${config.BUDGET_ALERT_USD:.2f}",
+                    f"Month to date: {summary(cur)}. Check console.anthropic.com and your spend limit.", state)
+
+
 def in_quiet_hours(local):
     start, end = config.QUIET_HOURS
     h = local.hour
@@ -468,6 +500,7 @@ def main():
     month = now().strftime("%Y-%m")
     usage = state.setdefault("usage", {}).setdefault(month, {"input": 0, "output": 0, "calls": 0})
     usage.setdefault("cost", 0.0)
+    usage.setdefault("cards", 0)
     price_in, price_out = config.PRICES.get(ai, (0, 0))
     new_cards = []
     ai_errors = []
@@ -531,6 +564,7 @@ def main():
             seen.setdefault(it["id"], iso(now()))
 
     log(f"{len(new_cards)} new cards")
+    usage["cards"] += len(new_cards)
     if ai_errors:
         admin_alert("AI summaries failing",
                     f"{len(ai_errors)} batch(es) failed; stories will be retried. Error: {ai_errors[0]}",
@@ -554,9 +588,9 @@ def main():
     if not first_run:
         send_alerts(new_cards, local)
     send_digest(cards, state, local)
+    send_cost_reports(state, local, ai)
 
-    save_json(CARDS_PATH, {"updated": iso(now()), "month_cost_usd": round(cost, 2),
-                           "ai_calls_month": usage["calls"], "cards": cards})
+    save_json(CARDS_PATH, {"updated": iso(now()), "cards": cards})
     save_json(STATE_PATH, state)
 
 

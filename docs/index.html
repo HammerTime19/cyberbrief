@@ -217,7 +217,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   </header>
   <nav class="filters" id="filters" aria-label="Filter stories"></nav>
   <main class="feed" id="feed" tabindex="-1"></main>
-  <footer class="status"><span id="position"></span><span id="cost"></span></footer>
+  <footer class="status"><span id="position"></span></footer>
 </div>
 
 <script>
@@ -406,9 +406,6 @@ function setPosition(n, total) {
 
 function renderMeta() {
   $("updated").textContent = data.updated ? `Updated ${ago(data.updated)}` : "";
-  $("cost").textContent = data.month_cost_usd
-    ? `$${Number(data.month_cost_usd).toFixed(2)} this month`
-    : data.ai_calls_month ? `Free tier, ${data.ai_calls_month} AI calls this month` : "";
 }
 
 async function load() {

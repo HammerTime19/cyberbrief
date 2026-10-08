@@ -65,3 +65,8 @@ CVE_RECHECK_DAYS = 7      # stop rechecking cards older than this
 
 # Owner alerts (sent to the NTFY_ADMIN_TOPIC secret, never to readers' topic)
 FEED_DOWN_AFTER_RUNS = 6  # alert when a feed has failed this many runs in a row (~3 hours)
+
+# Spending reports to the owner (admin topic). Readers never see costs.
+COST_REPORT_WEEKDAY = 0   # weekly month-to-date report: 0 = Monday; None to disable
+COST_REPORT_HOUR = 9      # local hour for the weekly report
+BUDGET_ALERT_USD = 8.00   # alert once a month when estimated AI spend passes this; None to disable

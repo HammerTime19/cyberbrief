@@ -1,86 +1,92 @@
 # Intel60
 
-Cybersecurity news as 60-word swipeable cards, Inshorts-style, with push alerts for critical stories.
+**Cybersecurity news in 60 words.** Intel60 turns the day's security news into swipeable cards for SOC analysts: what happened, who's affected, and what defenders should do, rated by severity and enriched with vulnerability data.
 
-Every 30 minutes a GitHub Action pulls 7 security news feeds plus the CISA KEV catalog, drops ads and webinars, and sends new stories to an AI model. The model writes a headline, a 60-word summary, a severity (critical, high, info) and a category for each one, and merges duplicates when several outlets cover the same incident. The cards are published to a phone-installable web app on GitHub Pages. Critical stories, and high-severity stories that match your watchlist, are pushed to your phone through ntfy. A morning summary arrives at 7am.
+**[Open the app →](https://hammertime19.github.io/intel60/)** (on a phone, use Add to Home Screen to install it)
 
-Cost: $0. By default the summaries use GitHub Models' free tier through the token GitHub Actions already provides, so no AI account or key is needed. Hosting, scheduling and notifications are free on a public repo. The app's bottom corner shows how many AI calls you've used this month.
+<p align="center">
+  <img src="assets/critical.png" width="250" alt="A critical-severity card about an unauthenticated RCE">
+  &nbsp;
+  <img src="assets/cve.png" width="250" alt="A high-severity card with CVSS, EPSS and Exploited badges">
+  &nbsp;
+  <img src="assets/divider.png" width="250" alt="The divider screen between today's and yesterday's stories">
+</p>
 
-| AI provider | Cost | Setup | Free limit (approx.) | Typical use |
-|---|---|---|---|---|
-| `github` (default) | Free | None | ~150 requests/day | 50–100/day |
-| `gemini` | Free | Google AI Studio key | ~1,000 requests/day | 50–100/day |
-| `anthropic` | ~$3–5/month | Anthropic key + credit | None | 50–100/day |
+## What it does
 
-Free-tier limits are set by GitHub and Google and can change. If a run hits a limit, the stories it couldn't summarize are retried on the next run.
-
-## Setup (about 15 minutes)
-
-1. **Create the repo.** Make a new public GitHub repo (for example `intel60`) and upload every file from this folder, including the hidden `.github` folder. The default branch must be `main`.
-
-2. **Set up phone notifications.** Install the ntfy app (iOS or Android). Tap + and subscribe to a topic name nobody could guess, such as `intel60-7f3k9q2m8x`. Topics on ntfy.sh are public to anyone who knows the name, so treat it like a password.
-
-3. **Add the secret.** In the repo, go to Settings > Secrets and variables > Actions and add a repository secret named `NTFY_TOPIC` with your topic name.
-
-4. **Turn on Pages.** Go to Settings > Pages and set Source to "GitHub Actions".
-
-5. **Run it.** Go to the Actions tab, choose "Update Intel60", then Run workflow. The first run summarizes the 15 newest stories and sends no alerts, so you don't get a flood of notifications.
-
-6. **Install the app.** Open `https://<your-username>.github.io/<repo-name>/` on your phone. On iPhone, use Share > Add to Home Screen in Safari. On Android, use Chrome's menu > Add to Home screen.
-
-## Using it
-
-- Swipe up for the next story. Tap a filter to see only critical stories or one category.
-- Tap Intel60 at the top to jump back to the newest story and refresh.
-- "New" marks stories added since you last closed the app.
-- Tapping a notification opens the app on that story.
-- On a computer, use the arrow keys or j/k.
-
-## CVE details, owner alerts and day dividers
-
-- **CVE details:** cards that mention CVEs show the CVSS score (NVD), the chance of exploitation in the next 30 days (FIRST EPSS) and an "Exploited" tag for CVEs in CISA's KEV catalog. New CVEs often have no score yet; they are checked again every 6 hours for a week. No keys needed.
-- **Owner alerts:** add a repository secret `NTFY_ADMIN_TOPIC` with a second, private ntfy topic and subscribe to it yourself. You get an alert when a run fails (and when it recovers), when AI summaries fail (for example, out of credit), or when a feed has been down for about 3 hours. Readers subscribed to `NTFY_TOPIC` never see these.
-- **Day dividers:** the app groups cards by day with a divider screen between days, and has Today and Yesterday filters.
-
-## External 30-minute timer
-
-GitHub often delays scheduled runs by hours on quiet repos. For reliable updates, have a free service such as cron-job.org send `POST https://api.github.com/repos/<owner>/<repo>/actions/workflows/update.yml/dispatches` every 30 minutes, with the body `{"ref":"main","inputs":{"source":"timer"}}`, the headers `Authorization: Bearer <token>`, `Accept: application/vnd.github+json` and `X-GitHub-Api-Version: 2022-11-28`, and a fine-grained token limited to this repo with Actions read and write. Renew the token before it expires.
-
-## Switching AI providers
-
-Add a repository variable (Settings > Secrets and variables > Actions > Variables) named `AI_PROVIDER`:
-
-- `gemini`: create a free key at aistudio.google.com and add it as the secret `GEMINI_API_KEY`. Google may use free-tier prompts to improve its models; the inputs here are public news.
-- `anthropic`: add the secret `ANTHROPIC_API_KEY`, buy $5 of credit, and set a spend limit at console.anthropic.com. The app then shows real month-to-date cost.
-
-Model names live in `MODELS` in `pipeline/config.py`. Providers retire models over time; if a run logs a model-not-found error, update the name there.
-
-## Customizing
-
-Everything lives in `pipeline/config.py`:
-
-- `FEEDS`: add or remove RSS sources.
-- `WATCHLIST`: vendors and terms you care about. Matches get a tag, and high-severity matches trigger an alert.
-- `EXCLUDE_PATTERNS`: title patterns to drop before they reach the AI.
-- `QUIET_HOURS`: alerts during these hours arrive silently.
-- `DIGEST_HOUR`: time of the morning summary, or `None` to turn it off.
-- `NOTIFY_MAX_PER_RUN`: caps alerts per run; any extras are grouped into one notification.
-
-To change how stories are written or rated, edit `SYSTEM_PROMPT` in `pipeline/brief.py`.
-
-If you use a custom domain for Pages, add a repository variable `APP_URL` with the full address so notification links point to the right place.
-
-## Troubleshooting
-
-- **No cards after the first run:** open the run in the Actions tab and read the "Fetch and summarize news" step. A missing secret, a model error or a feed error will be named there.
-- **"rate limited" in the log:** the free tier's limit was reached. Remaining stories are picked up on later runs. If it happens daily, switch to `gemini`.
-- **Updates arrive late:** GitHub can delay scheduled runs by 5–15 minutes when it's busy.
-- **Alerts not arriving:** check that the topic in the ntfy app exactly matches the `NTFY_TOPIC` secret.
-- **App shows old cards after an update:** close the app fully and reopen it.
+- **Reads the security press for you.** Every 30 minutes it checks 8 sources (BleepingComputer, The Hacker News, SecurityWeek, Krebs on Security, Dark Reading, The Record, CyberScoop, SANS ISC) plus CISA's Known Exploited Vulnerabilities catalog.
+- **Writes a 60-word card per story.** An LLM (Claude Haiku) writes the headline and summary, rates severity (critical / high / info), assigns a category, and merges duplicate coverage when several outlets report the same incident.
+- **Adds vulnerability context.** Cards that mention CVEs show the CVSS score (NVD), the probability of exploitation in the next 30 days (FIRST EPSS), and an **Exploited** tag for CVEs on CISA's KEV list.
+- **Pushes what matters.** Critical stories, and high-severity stories that match a watchlist of vendors, go to subscribers' phones through [ntfy](https://ntfy.sh), plus a 7am morning brief. Overnight alerts arrive silently.
+- **Works like an app.** Installable progressive web app with offline support, one card per screen, Today/Yesterday grouping, severity filters, and text that resizes so every story fits.
 
 ## How it works
 
-- `pipeline/brief.py`: fetches feeds, filters, summarizes in batches of 8 stories per AI call, merges duplicates, sends alerts, and writes `docs/cards.json`.
-- `pipeline/state.json`: stories already processed, plus monthly AI usage.
-- `docs/`: the web app (`index.html`), offline support (`sw.js`) and install files.
-- `.github/workflows/update.yml`: runs the pipeline, commits new cards and deploys the app.
+```mermaid
+flowchart TD
+    T[cron-job.org timer<br/>every 30 min] --> A[GitHub Actions run]
+    A --> F[Fetch 8 RSS feeds<br/>+ CISA KEV]
+    F --> X[Filter: seen before, older than 48h,<br/>ads and webinars]
+    X --> L[Claude Haiku: headline, 60-word summary,<br/>severity, category, duplicate check]
+    L --> E[Enrich CVEs: NVD CVSS,<br/>FIRST EPSS, CISA KEV]
+    E --> J[(docs/cards.json)]
+    J --> P[GitHub Pages<br/>web app]
+    E --> N[ntfy push alerts<br/>for critical stories]
+    A -. failures, feed outages,<br/>spending reports .-> O[Private owner<br/>alert channel]
+    P --> U[Readers' phones]
+```
+
+The AI runs once per story, never per reader: every phone downloads the same `cards.json`, so the cost is the same for 1 reader or 1,000. A run with no new stories makes no AI calls.
+
+## Engineering notes
+
+Problems I hit while running Intel60, and how I handled them:
+
+- **The free AI provider was shut down.** The project originally used GitHub Models' free tier, which GitHub retired in July 2026. Its endpoint started returning a plain `200 OK` instead of JSON, so every run "succeeded" with zero cards. I added logging of the raw response to find the cause, then moved summaries to the Anthropic API (about $3–5/month).
+- **GitHub's scheduler was unreliable.** On a new repo, the `cron` trigger ran every 4–7 hours instead of every 30 minutes. An external timer (cron-job.org) now calls the `workflow_dispatch` API with a fine-grained token scoped to this one repo; GitHub's own schedule stays on as a backup.
+- **Overlapping runs clashed.** When two runs queued back to back, the second checked out a stale commit and failed to push. Each run now checks out the latest `main`, and if two runs' card updates still clash, the newer run's cards win.
+- **A government feed blocked automated requests.** CISA's advisories RSS returned 403 from GitHub's runners, so it was replaced with CyberScoop and SANS ISC; CISA's KEV catalog (JSON) still works and still feeds the app.
+- **Silent failures.** Monitoring alerts the owner, on a separate private channel, when a run fails or recovers, when AI calls fail (for example, out of credit), when a feed has been down for about 3 hours, and when spending passes a budget. A weekly report shows spending so far this month.
+
+## Tech stack
+
+Python (requests, feedparser) · GitHub Actions · GitHub Pages · Anthropic API (Claude Haiku 4.5) · NVD API · FIRST EPSS API · CISA KEV · ntfy · vanilla HTML/CSS/JS progressive web app with a service worker for offline use
+
+## Project structure
+
+| Path | What it is |
+|---|---|
+| `pipeline/brief.py` | The pipeline: fetch, filter, summarize, enrich CVEs, alert, write cards |
+| `pipeline/config.py` | Feeds, watchlist, filters, alert and budget settings |
+| `pipeline/state.json` | Stories already processed, feed health, monthly usage |
+| `docs/index.html` | The web app |
+| `docs/sw.js` | Offline support and automatic app updates |
+| `docs/cards.json` | Current cards (written by the pipeline) |
+| `.github/workflows/update.yml` | Runs the pipeline, commits cards, deploys Pages, reports failures |
+
+## Run your own copy
+
+1. **Fork or copy this repo.** The default branch must be `main`.
+2. **Add secrets** (Settings > Secrets and variables > Actions):
+   - `ANTHROPIC_API_KEY`: from console.anthropic.com. Add about $5 of credit and set a spend limit.
+   - `NTFY_TOPIC`: a hard-to-guess topic name for reader alerts, for example `intel60-7f3k9q2m8x`. Anyone who knows an ntfy.sh topic name can read and post to it, so treat it like a password.
+   - `NTFY_ADMIN_TOPIC` (optional): a second, private topic for failure alerts and spending reports.
+3. **Add a variable** `AI_PROVIDER` = `anthropic`. Set it to `gemini` and add `GEMINI_API_KEY` to use Google's free tier instead.
+4. **Allow the workflow to push:** Settings > Actions > General > Workflow permissions > Read and write.
+5. **Turn on Pages:** Settings > Pages > Source: GitHub Actions.
+6. **Run it:** Actions > Update Intel60 > Run workflow. The first run summarizes the 15 newest stories and sends no alerts.
+7. **Optional, recommended:** set up an external 30-minute timer. Send `POST https://api.github.com/repos/<owner>/<repo>/actions/workflows/update.yml/dispatches` with the body `{"ref":"main","inputs":{"source":"timer"}}`, the headers `Authorization: Bearer <token>`, `Accept: application/vnd.github+json` and `X-GitHub-Api-Version: 2022-11-28`, and a fine-grained token limited to the repo with Actions read and write.
+
+Everything else, including feeds, watchlist, quiet hours, morning brief time, alert caps and budget, is in `pipeline/config.py`. To change how stories are written or rated, edit `SYSTEM_PROMPT` in `pipeline/brief.py`.
+
+## Costs
+
+| Part | Cost |
+|---|---|
+| Claude Haiku summaries (about $0.001 per story) | about $3–5/month |
+| GitHub Actions and Pages (public repo) | Free |
+| ntfy.sh, cron-job.org, NVD, EPSS, CISA KEV, RSS feeds | Free |
+
+---
+
+Built by Kushal Mankar with AI-assisted development (Claude Code).
