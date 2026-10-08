@@ -1,6 +1,48 @@
 {
- "updated": "2026-10-08T17:00:36Z",
+ "updated": "2026-10-08T17:30:34Z",
  "cards": [
+  {
+   "id": "e03acd2bf4",
+   "headline": "FakeGit campaign spreads SmartLoader malware GitHub repos",
+   "summary": "The FakeGit malware campaign reactivated in October 2026, distributing over 17,600 malicious GitHub repositories hosting the SmartLoader malware and StealC infostealer. Developers downloading code from these fake repos risk credential theft and system compromise. Verify repository legitimacy and scan downloaded code before use.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/fakegit-malware-campaign-returns-with-17-610-malicious-github-repos/",
+   "published": "2026-10-08T17:10:55Z",
+   "added": "2026-10-08T17:30:34Z",
+   "also": []
+  },
+  {
+   "id": "08181ca503",
+   "headline": "ASOS breach compromises customer personal information accounts",
+   "summary": "Fashion retailer ASOS confirmed attackers accessed an employee account and sent rogue push notifications. The breach exposed customer names, contact details, and non-personal account information. External investigation is complete. ASOS customers should monitor for phishing attempts and reset passwords as a precautionary measure.",
+   "severity": "high",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/asos-says-hackers-tricked-employee-access-push-notification",
+   "published": "2026-10-08T16:57:00Z",
+   "added": "2026-10-08T17:30:34Z",
+   "also": []
+  },
+  {
+   "id": "e23311ff0c",
+   "headline": "Japan hit by wave data leaks via mobile APIs Metabase",
+   "summary": "Japanese organizations are experiencing personal data breaches via abused mobile app APIs and exploitation of known software flaws like Metabase vulnerabilities. The JPCERT Coordination Center issued an alert on October 8, 2026, based on incident reports but did not identify specific attackers or victims. Organizations should patch known Metabase flaws and audit API security to prevent unauthorized access.",
+   "severity": "high",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/japan-sees-sharp-rise-in-web-data-leaks.html",
+   "published": "2026-10-08T15:45:56Z",
+   "added": "2026-10-08T17:30:34Z",
+   "also": []
+  },
   {
    "id": "3842ac95a4",
    "headline": "Crypto thief sentenced for $260K SIM-swap fraud",
@@ -235,6 +277,10 @@
     {
      "source": "SecurityWeek",
      "url": "https://www.securityweek.com/fake-decryption-tools-masked-11m-markup-in-ransomware-recovery-scheme/"
+    },
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/ransomware-recovery-charges-doj"
     }
    ]
   },
