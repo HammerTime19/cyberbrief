@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T20:00:37Z",
+ "updated": "2026-10-08T20:30:31Z",
  "cards": [
+  {
+   "id": "b5d5048100",
+   "headline": "IDC Frontier IDCF Cloud ransomware attack disrupts services",
+   "summary": "IDC Frontier, Japan's major cloud infrastructure provider, suffered a ransomware attack causing outages at an eastern data center cluster serving government clients. The incident disrupted IDCF Cloud services for affected organizations. Details on attacker identity, ransom demand, and recovery timeline remain unavailable. Customers should verify backups and review access logs for unauthorized activity.",
+   "severity": "high",
+   "category": "Ransomware",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/ransomware-attack-disrupts-japans-idcf-cloud-used-by-govt-clients/",
+   "published": "2026-10-08T20:09:45Z",
+   "added": "2026-10-08T20:30:31Z",
+   "also": []
+  },
   {
    "id": "4528bc371e",
    "headline": "US allies seize Integrity Tech Flax Typhoon infrastructure",
@@ -13,7 +27,12 @@
    "url": "https://therecord.media/flax-typhoon-china-tools-integrity-tech-international-takedown",
    "published": "2026-10-08T19:20:00Z",
    "added": "2026-10-08T20:00:37Z",
-   "also": []
+   "also": [
+    {
+     "source": "CyberScoop",
+     "url": "https://cyberscoop.com/doj-fbi-seize-flax-typhoon-hacking-tools-microscan-fishhub/"
+    }
+   ]
   },
   {
    "id": "90f714cac7",
