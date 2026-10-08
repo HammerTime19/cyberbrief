@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T08:00:34Z",
+ "updated": "2026-10-08T08:30:36Z",
  "cards": [
+  {
+   "id": "8f3c408dcb",
+   "headline": "Oracle Health breach exposes nearly 20 million records",
+   "summary": "Oracle Health's data breach has grown to affect nearly 20 million people, significantly higher than previously disclosed. The incident exposed patient records and personal health information. Oracle has begun notifying affected individuals. Organizations using Oracle Health systems should verify their security posture and monitor for unauthorized access to patient data.",
+   "severity": "critical",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/oracle-health-data-breach-tally-climbs-to-nearly-20-million/",
+   "published": "2026-10-08T08:23:31Z",
+   "added": "2026-10-08T08:30:36Z",
+   "also": []
+  },
   {
    "id": "054bfa86a5",
    "headline": "MonsterCloud CEO charged with defrauding ransomware victims",
@@ -13,7 +27,12 @@
    "url": "https://www.bleepingcomputer.com/news/security/ransomware-recovery-ceo-charged-over-secret-ransom-payments/",
    "published": "2026-10-07T23:04:37Z",
    "added": "2026-10-07T23:30:29Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/monstercloud-owner-accused-of-billing.html"
+    }
+   ]
   },
   {
    "id": "e63549e2e0",
@@ -41,7 +60,12 @@
    "url": "https://therecord.media/accused-hafnium-hacker-zhang-yu-10million-reward",
    "published": "2026-10-07T19:50:00Z",
    "added": "2026-10-07T20:08:26Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/us-offers-up-to-10-million-for-tips-on.html"
+    }
+   ]
   },
   {
    "id": "b9f5e1afc2",
