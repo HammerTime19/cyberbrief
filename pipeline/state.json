@@ -175,7 +175,10 @@
  "last_digest": "2026-10-08",
  "last_digest_at": "2026-10-08T11:00:36Z",
  "health": {
-  "feeds": {}
+  "feeds": {},
+  "alerted": {
+   "ai": "2026-10-08T14:00:37Z"
+  }
  },
  "last_month_report": "2026-09"
 }
