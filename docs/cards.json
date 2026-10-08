@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T19:30:31Z",
+ "updated": "2026-10-08T20:00:37Z",
  "cards": [
+  {
+   "id": "4528bc371e",
+   "headline": "US allies seize Integrity Tech Flax Typhoon infrastructure",
+   "summary": "An international coalition took down digital tools and infrastructure operated by Beijing-based Integrity Tech used in the Flax Typhoon campaign to conduct widespread vulnerability scanning and intrusions. The operation targeted infrastructure that enabled the state-sponsored cyber espionage group's activities. This represents enforcement action against foreign government-linked cyber operations targeting critical infrastructure and networks.",
+   "severity": "high",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/flax-typhoon-china-tools-integrity-tech-international-takedown",
+   "published": "2026-10-08T19:20:00Z",
+   "added": "2026-10-08T20:00:37Z",
+   "also": []
+  },
   {
    "id": "90f714cac7",
    "headline": "Venezuelan cartel malware operator arrested ATM jackpotting",
@@ -471,6 +485,10 @@
     {
      "source": "The Record",
      "url": "https://therecord.media/ransomware-recovery-charges-doj"
+    },
+    {
+     "source": "CyberScoop",
+     "url": "https://cyberscoop.com/monstercloud-zohar-pinhasi-ransomware-recovery-scheme/"
     }
    ]
   },
