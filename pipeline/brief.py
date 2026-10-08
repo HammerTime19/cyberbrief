@@ -208,18 +208,50 @@ def provider():
     return name
 
 
-def call_model(name, system, user, max_tokens):
-    """Returns (text, input_tokens, output_tokens)."""
+# Anthropic returns the cards through a forced tool call, so the API hands back structured
+# data instead of JSON text the model wrote itself (which an unescaped quote can break).
+CARDS_TOOL = {
+    "name": "publish_cards",
+    "description": "Publish the processed stories as cards, exactly one entry per story, in order.",
+    "input_schema": {
+        "type": "object",
+        "properties": {"cards": {"type": "array", "items": {
+            "type": "object",
+            "properties": {
+                "i": {"type": "integer"},
+                "skip": {"type": "boolean"},
+                "duplicate_of": {"type": ["string", "null"]},
+                "headline": {"type": "string"},
+                "summary": {"type": "string"},
+                "severity": {"type": "string", "description": "critical, high or info"},
+                "category": {"type": "string", "description": ", ".join(CATEGORIES)},
+                "cves": {"type": "array", "items": {"type": "string"}},
+            },
+            "required": ["i", "skip"],
+        }}},
+        "required": ["cards"],
+    },
+}
+
+
+def call_model(name, system, user, max_tokens, tool=None):
+    """Returns (text, input_tokens, output_tokens). With tool (Anthropic only), text is the
+    tool call's input as JSON."""
     model = config.MODELS[name]
     if name == "anthropic":
         import anthropic
+        extra = {"tools": [tool], "tool_choice": {"type": "tool", "name": tool["name"]}} if tool else {}
         try:
             msg = anthropic.Anthropic(max_retries=3).messages.create(
                 model=model, max_tokens=max_tokens, system=system,
-                messages=[{"role": "user", "content": user}])
+                messages=[{"role": "user", "content": user}], **extra)
         except anthropic.RateLimitError as e:
             raise RateLimited(str(e))
-        text = "".join(b.text for b in msg.content if b.type == "text")
+        calls = [b for b in msg.content if b.type == "tool_use"]
+        if tool and calls:
+            text = json.dumps(calls[0].input)
+        else:
+            text = "".join(b.text for b in msg.content if b.type == "text")
         return text, msg.usage.input_tokens, msg.usage.output_tokens
 
     url, key_name = OPENAI_COMPATIBLE[name]
@@ -249,9 +281,17 @@ def summarize(name, batch, recent_cards):
         "stories": [{"i": n, "source": it["source"], "title": it["title"],
                      "published": it["published"], "text": it["text"]} for n, it in enumerate(batch)],
     }
-    text, tin, tout = call_model(name, SYSTEM_PROMPT, json.dumps(payload, ensure_ascii=False),
-                                 300 * len(batch) + 300)
-    return parse_model_json(text).get("cards", []), tin, tout
+    tin = tout = 0
+    for attempt in (1, 2):  # one immediate retry if the reply can't be read
+        text, i, o = call_model(name, SYSTEM_PROMPT, json.dumps(payload, ensure_ascii=False),
+                                300 * len(batch) + 300, tool=CARDS_TOOL)
+        tin, tout = tin + i, tout + o
+        try:
+            return parse_model_json(text).get("cards", []), tin, tout
+        except ValueError as e:
+            if attempt == 2:
+                raise ValueError(f"{e} (after retry)")
+            log(f"  ! unreadable reply, retrying: {e}")
 
 
 # ---------- notifications ----------
