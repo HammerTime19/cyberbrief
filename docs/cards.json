@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T21:30:37Z",
+ "updated": "2026-10-08T22:00:39Z",
  "cards": [
+  {
+   "id": "305b75f770",
+   "headline": "764 leader pleads guilty sextortion minors extortion",
+   "summary": "Prasan Nepal, 21, who led the child sextortion group 764 as a teenager, pleaded guilty to conspiracy to commit sexual exploitation of a child. Nepal ran the network for nearly four years, facilitating grooming, manipulation, and extortion of minors. He faces 15 to 30 years in prison upon sentencing.",
+   "severity": "info",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "CyberScoop",
+   "url": "https://cyberscoop.com/764-leader-prasan-nepal-guilty/",
+   "published": "2026-10-08T21:41:53Z",
+   "added": "2026-10-08T22:00:39Z",
+   "also": []
+  },
   {
    "id": "f5568cb9bc",
    "headline": "AWS Bedrock AgentCore vulnerability AgentCorruption patched",
@@ -61,6 +75,10 @@
     {
      "source": "CyberScoop",
      "url": "https://cyberscoop.com/doj-fbi-seize-flax-typhoon-hacking-tools-microscan-fishhub/"
+    },
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/fbi-disrupts-chinese-hacking-tools-used-to-breach-critical-infrastructure/"
     }
    ]
   },
