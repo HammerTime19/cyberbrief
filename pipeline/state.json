@@ -146,12 +146,14 @@
    "input": 60777,
    "output": 13039,
    "calls": 26,
-   "cost": 0.125972
+   "cost": 0.125972,
+   "cards": 0
   }
  },
  "last_digest": "2026-10-07",
  "last_digest_at": "2026-10-07T13:11:41Z",
  "health": {
   "feeds": {}
- }
+ },
+ "last_month_report": "2026-09"
 }
