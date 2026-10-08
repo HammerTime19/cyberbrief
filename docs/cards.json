@@ -1,6 +1,36 @@
 {
- "updated": "2026-10-08T15:00:37Z",
+ "updated": "2026-10-08T15:30:36Z",
  "cards": [
+  {
+   "id": "597dc14886",
+   "headline": "UAC-0099 deploys ASHVEIN RAT against Ukrainian government",
+   "summary": "Russia-aligned threat actor UAC-0099 deployed ASHVEIN, a previously undocumented .NET infostealer and remote access trojan, against Ukrainian government personnel. The malware hides commands within HTML to evade detection. TrendAI tracks the cluster as Earth Sirrush. Ukrainian government agencies should implement detection signatures and restrict .NET execution on sensitive systems.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/uac-0099-targets-ukrainian-government.html",
+   "published": "2026-10-08T15:26:56Z",
+   "added": "2026-10-08T15:30:36Z",
+   "also": []
+  },
+  {
+   "id": "ec58741183",
+   "headline": "Cisco NX-OS critical flaws enable Nexus switch takeover",
+   "summary": "Cisco released security advisories addressing five critical vulnerabilities in NX-OS affecting Nexus data center switches. The flaws allow unauthenticated attackers to execute arbitrary code with root privileges. No exploitation in the wild has been reported yet. Administrators should apply patches immediately and prioritize Nexus switches in vulnerable network segments.",
+   "severity": "critical",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [
+    "Cisco"
+   ],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/cisco-warns-of-critical-flaws-allowing-nexus-switch-takeover/",
+   "published": "2026-10-08T15:26:33Z",
+   "added": "2026-10-08T15:30:36Z",
+   "also": []
+  },
   {
    "id": "8a9796b22d",
    "headline": "Russian extortion gang operating agents inside US law firms",
@@ -13,6 +43,20 @@
    "url": "https://therecord.media/leaked-chats-show-russian-extortion-gang-sending-agents-to-law-firms",
    "published": "2026-10-08T14:46:00Z",
    "added": "2026-10-08T15:00:37Z",
+   "also": []
+  },
+  {
+   "id": "f27324b6e8",
+   "headline": "ARTEX AI pentesting tool used in South Korean financial data theft",
+   "summary": "Threat actors used ARTEX, an artificial intelligence pentesting tool, to target South Korean financial organizations in a campaign running from late September through early October 2026. The attacks resulted in data exfiltration from multiple firms. CrowdStrike Intelligence attributed the activity and disclosed details of the campaign. Organizations should review access logs and implement detection rules for ARTEX exploitation.",
+   "severity": "high",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/artex-ai-pentesting-tool-used-in-data.html",
+   "published": "2026-10-08T14:12:34Z",
+   "added": "2026-10-08T15:30:36Z",
    "also": []
   },
   {
