@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T10:30:40Z",
+ "updated": "2026-10-08T11:00:37Z",
  "cards": [
+  {
+   "id": "1aa8f38815",
+   "headline": "Wazza phishkit targets banking government manufacturing",
+   "summary": "ANY.RUN researchers discovered Wazza, a sophisticated phishing kit targeting banking, government, and manufacturing sectors across the US, EU, and Australia. Unlike basic phishing pages, Wazza includes advanced filtering, session management, and traffic controls to evade detection and improve success rates. The kit represents an evolution in phishing infrastructure capabilities. Organizations in affected sectors should enhance email security, deploy phishing detection tools, and conduct staff awareness training.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/wazza-phishkit-targets-banking.html",
+   "published": "2026-10-08T10:30:00Z",
+   "added": "2026-10-08T11:00:36Z",
+   "also": []
+  },
   {
    "id": "540604118d",
    "headline": "Empire Market co-creator sentenced 40 years prison",
