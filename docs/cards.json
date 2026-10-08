@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T09:30:39Z",
+ "updated": "2026-10-08T10:00:33Z",
  "cards": [
+  {
+   "id": "f31e2f0411",
+   "headline": "16 malicious Firefox extensions steal crypto wallet recovery phrases",
+   "summary": "Researchers discovered 16 malicious Firefox extensions posing as Rabby and OKX wallet tools to steal cryptocurrency recovery phrases and private keys. The extensions intercept secrets during wallet import flows and exfiltrate them to attacker-controlled servers. Users should remove suspicious wallet extensions, verify tool authenticity before installation, and consider rotating compromised wallet credentials if imported through Firefox.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/16-malicious-firefox-extensions-pose-as.html",
+   "published": "2026-10-08T09:46:32Z",
+   "added": "2026-10-08T10:00:33Z",
+   "also": []
+  },
   {
    "id": "8f3c408dcb",
    "headline": "Oracle Health breach exposes nearly 20 million records",
