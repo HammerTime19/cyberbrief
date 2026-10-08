@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-08T07:30:26Z",
+ "updated": "2026-10-08T08:00:34Z",
  "cards": [
   {
    "id": "054bfa86a5",
@@ -254,6 +254,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/fbi-ongoing-fortibleed-attacks-lock-out-fortigate-vpn-admins/"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/fortibleed-attackers-locking-victims-out-of-fortinet-devices/"
     }
    ]
   },
