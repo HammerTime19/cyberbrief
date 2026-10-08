@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T14:30:37Z",
+ "updated": "2026-10-08T15:00:37Z",
  "cards": [
+  {
+   "id": "8a9796b22d",
+   "headline": "Russian extortion gang operating agents inside US law firms",
+   "summary": "Leaked chats from a Russian extortion gang reveal coordination of dozens of victims and negotiation of multimillion-dollar ransom payments. The gang directs operatives based in the United States, referred to as \"agents,\" suggesting domestic involvement in extortion campaigns. Law firms are targeted for sensitive data and financial leverage. Organizations should review access logs and strengthen incident detection around unusual data exfiltration.",
+   "severity": "high",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/leaked-chats-show-russian-extortion-gang-sending-agents-to-law-firms",
+   "published": "2026-10-08T14:46:00Z",
+   "added": "2026-10-08T15:00:37Z",
+   "also": []
+  },
   {
    "id": "195dd387c6",
    "headline": "South Korean megachurches hit by cyberattacks exposing members",
