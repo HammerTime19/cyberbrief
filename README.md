@@ -22,6 +22,8 @@
 
 ## How it works
 
+**[See the step-by-step visual guide →](https://hammertime19.github.io/intel60/workflow.html)**
+
 ```mermaid
 flowchart TD
     T[cron-job.org timer<br/>every 30 min] --> A[GitHub Actions run]
@@ -61,6 +63,7 @@ Python (requests, feedparser) · GitHub Actions · GitHub Pages · Anthropic API
 | `pipeline/state.json` | Stories already processed, feed health, monthly usage |
 | `docs/index.html` | The web app |
 | `docs/sw.js` | Offline support and automatic app updates |
+| `docs/workflow.html` | Visual guide to how the pipeline works |
 | `docs/cards.json` | Current cards (written by the pipeline) |
 | `.github/workflows/update.yml` | Runs the pipeline, commits cards, deploys Pages, reports failures |
 

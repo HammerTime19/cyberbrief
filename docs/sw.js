@@ -1,5 +1,5 @@
 // Offline support: the app shell is cached; stories load fresh and fall back to the last copy.
-const SHELL = "intel60-shell-v2";
+const SHELL = "intel60-shell-v3";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icons/icon-192.png"];
 
 self.addEventListener("install", (e) => {
@@ -36,10 +36,10 @@ self.addEventListener("fetch", (e) => {
       fetch(e.request).then((res) => {
         if (res.ok) {
           const copy = res.clone();
-          caches.open(SHELL).then((c) => c.put("./", copy));
+          caches.open(SHELL).then((c) => c.put(e.request, copy));  // each page cached under its own URL
         }
         return res;
-      }).catch(() => caches.match("./"))
+      }).catch(() => caches.match(e.request).then((hit) => hit || caches.match("./")))
     );
     return;
   }
