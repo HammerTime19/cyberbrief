@@ -1,6 +1,22 @@
 {
- "updated": "2026-10-08T21:00:52Z",
+ "updated": "2026-10-08T21:30:37Z",
  "cards": [
+  {
+   "id": "f5568cb9bc",
+   "headline": "AWS Bedrock AgentCore vulnerability AgentCorruption patched",
+   "summary": "A vulnerability in AWS Bedrock AgentCore, dubbed AgentCorruption, could allow attackers to compromise entire AWS environments through a single AI chatbot prompt. The flaw has been patched by AWS. Organizations using AWS Bedrock agents should verify they are running the latest version to mitigate exploitation risk. Defenders should review agent configurations for suspicious access patterns.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [
+    "AWS"
+   ],
+   "source": "Dark Reading",
+   "url": "https://www.darkreading.com/cloud-security/agentcorruption-aws-environments-at-risk-single-prompt",
+   "published": "2026-10-08T20:39:44Z",
+   "added": "2026-10-08T21:30:36Z",
+   "also": []
+  },
   {
    "id": "63be913fbf",
    "headline": "Google AI training deal risks Spirit Airlines data exposure",
