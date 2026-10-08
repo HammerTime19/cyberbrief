@@ -1,6 +1,6 @@
 {
-  "name": "CyberBrief",
-  "short_name": "CyberBrief",
+  "name": "Intel60",
+  "short_name": "Intel60",
   "description": "Cybersecurity news in 60 words",
   "start_url": "./",
   "scope": "./",

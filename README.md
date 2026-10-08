@@ -1,4 +1,4 @@
-# CyberBrief
+# Intel60
 
 Cybersecurity news as 60-word swipeable cards, Inshorts-style, with push alerts for critical stories.
 
@@ -16,22 +16,22 @@ Free-tier limits are set by GitHub and Google and can change. If a run hits a li
 
 ## Setup (about 15 minutes)
 
-1. **Create the repo.** Make a new public GitHub repo (for example `cyberbrief`) and upload every file from this folder, including the hidden `.github` folder. The default branch must be `main`.
+1. **Create the repo.** Make a new public GitHub repo (for example `intel60`) and upload every file from this folder, including the hidden `.github` folder. The default branch must be `main`.
 
-2. **Set up phone notifications.** Install the ntfy app (iOS or Android). Tap + and subscribe to a topic name nobody could guess, such as `cyberbrief-7f3k9q2m8x`. Topics on ntfy.sh are public to anyone who knows the name, so treat it like a password.
+2. **Set up phone notifications.** Install the ntfy app (iOS or Android). Tap + and subscribe to a topic name nobody could guess, such as `intel60-7f3k9q2m8x`. Topics on ntfy.sh are public to anyone who knows the name, so treat it like a password.
 
 3. **Add the secret.** In the repo, go to Settings > Secrets and variables > Actions and add a repository secret named `NTFY_TOPIC` with your topic name.
 
 4. **Turn on Pages.** Go to Settings > Pages and set Source to "GitHub Actions".
 
-5. **Run it.** Go to the Actions tab, choose "Update CyberBrief", then Run workflow. The first run summarizes the 15 newest stories and sends no alerts, so you don't get a flood of notifications.
+5. **Run it.** Go to the Actions tab, choose "Update Intel60", then Run workflow. The first run summarizes the 15 newest stories and sends no alerts, so you don't get a flood of notifications.
 
 6. **Install the app.** Open `https://<your-username>.github.io/<repo-name>/` on your phone. On iPhone, use Share > Add to Home Screen in Safari. On Android, use Chrome's menu > Add to Home screen.
 
 ## Using it
 
 - Swipe up for the next story. Tap a filter to see only critical stories or one category.
-- Tap CyberBrief at the top to jump back to the newest story and refresh.
+- Tap Intel60 at the top to jump back to the newest story and refresh.
 - "New" marks stories added since you last closed the app.
 - Tapping a notification opens the app on that story.
 - On a computer, use the arrow keys or j/k.

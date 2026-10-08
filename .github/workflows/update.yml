@@ -1,4 +1,4 @@
-name: Update CyberBrief
+name: Update Intel60
 
 on:
   schedule:
@@ -21,7 +21,7 @@ permissions:
   actions: read     # lets the health job see whether the previous run failed
 
 concurrency:
-  group: cyberbrief
+  group: intel60
   cancel-in-progress: false
 
 jobs:
@@ -58,7 +58,7 @@ jobs:
       - name: Commit new cards
         id: commit
         run: |
-          git config user.name "cyberbrief-bot"
+          git config user.name "intel60-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/cards.json pipeline/state.json
           if git diff --staged --quiet; then
@@ -103,7 +103,7 @@ jobs:
           prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow update.yml --status completed -L 1 --json conclusion --jq '.[0].conclusion // ""')
           echo "this run failed: $FAILED, previous run: $prev"
           if [ "$FAILED" = true ] && [ "$prev" != failure ]; then
-            curl -s -H "Title: CyberBrief: update failed" -H "Priority: 4" -H "Tags: rotating_light" -H "Click: $RUN_URL"               -d "A run failed (update: ${{ needs.update.result }}, deploy: ${{ needs.deploy.result }}). Tap to open the log. You will get another alert when it recovers."               "https://ntfy.sh/$ADMIN_TOPIC"
+            curl -s -H "Title: Intel60: update failed" -H "Priority: 4" -H "Tags: rotating_light" -H "Click: $RUN_URL"               -d "A run failed (update: ${{ needs.update.result }}, deploy: ${{ needs.deploy.result }}). Tap to open the log. You will get another alert when it recovers."               "https://ntfy.sh/$ADMIN_TOPIC"
           elif [ "$FAILED" != true ] && [ "$prev" = failure ]; then
-            curl -s -H "Title: CyberBrief: updates recovered" -H "Tags: white_check_mark" -H "Click: $RUN_URL"               -d "Runs are succeeding again." "https://ntfy.sh/$ADMIN_TOPIC"
+            curl -s -H "Title: Intel60: updates recovered" -H "Tags: white_check_mark" -H "Click: $RUN_URL"               -d "Runs are succeeding again." "https://ntfy.sh/$ADMIN_TOPIC"
           fi

@@ -1,4 +1,4 @@
-"""CyberBrief settings. Edit this file to change sources, filters and alerts."""
+"""Intel60 settings. Edit this file to change sources, filters and alerts."""
 
 # News sources (name, RSS URL)
 FEEDS = [

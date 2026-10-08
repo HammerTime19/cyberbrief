@@ -1,4 +1,4 @@
-"""CyberBrief pipeline.
+"""Intel60 pipeline.
 
 Fetches security news, turns each story into a 60-word card with an AI model,
 writes docs/cards.json for the app, and pushes critical stories to your phone via ntfy.
@@ -23,13 +23,13 @@ import config
 ROOT = Path(__file__).resolve().parent.parent
 CARDS_PATH = ROOT / "docs" / "cards.json"
 STATE_PATH = ROOT / "pipeline" / "state.json"
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; CyberBrief/1.0; personal news reader)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; Intel60/1.0; personal news reader)"}
 UTC = dt.timezone.utc
 
 SEVERITIES = ("critical", "high", "info")
 CATEGORIES = ("Vulnerability", "Breach", "Ransomware", "Malware", "Threat actor", "Policy", "Research")
 
-SYSTEM_PROMPT = """You are the editor of CyberBrief, a cybersecurity news app that turns each story into one short card, in the style of Inshorts. Your reader is a SOC analyst who wants to know what happened and whether it matters in under 30 seconds.
+SYSTEM_PROMPT = """You are the editor of Intel60, a cybersecurity news app that turns each story into one short card, in the style of Inshorts. Your reader is a SOC analyst who wants to know what happened and whether it matters in under 30 seconds.
 
 You receive JSON with:
 - recent_cards: cards already published (id and headline)
@@ -282,7 +282,7 @@ def admin_alert(title, message, state, key=None, every_hours=None):
             return
         sent[key] = iso(now())
     run = os.environ.get("GITHUB_RUN_URL")
-    ntfy(f"CyberBrief: {title}", message + (f"\n{run}" if run else ""),
+    ntfy(f"Intel60: {title}", message + (f"\n{run}" if run else ""),
          priority=4, tags=["wrench"], click=run, topic_var="NTFY_ADMIN_TOPIC")
 
 

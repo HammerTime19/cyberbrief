@@ -1,5 +1,5 @@
 // Offline support: the app shell is cached; stories load fresh and fall back to the last copy.
-const SHELL = "cyberbrief-shell-v2";
+const SHELL = "intel60-shell-v2";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icons/icon-192.png"];
 
 self.addEventListener("install", (e) => {
@@ -9,7 +9,7 @@ self.addEventListener("install", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== SHELL && k !== "cyberbrief-data").map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== SHELL && k !== "intel60-data").map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -23,9 +23,9 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(
       fetch(e.request).then((res) => {
         const copy = res.clone();
-        caches.open("cyberbrief-data").then((c) => c.put("cards.json", copy));
+        caches.open("intel60-data").then((c) => c.put("cards.json", copy));
         return res;
-      }).catch(() => caches.open("cyberbrief-data").then((c) => c.match("cards.json")))
+      }).catch(() => caches.open("intel60-data").then((c) => c.match("cards.json")))
     );
     return;
   }
