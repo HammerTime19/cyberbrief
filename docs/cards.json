@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T19:00:34Z",
+ "updated": "2026-10-08T19:24:13Z",
  "cards": [
+  {
+   "id": "90f714cac7",
+   "headline": "Venezuelan cartel malware operator arrested ATM jackpotting",
+   "summary": "A cybercriminal linked to the Tren de Aragua cartel has been arrested. He allegedly developed and deployed malware for ATM jackpotting attacks, generating substantial cash for the violent criminal organization. The arrest marks the first time a cybercriminal was placed on the FBI's 10 Most Wanted Fugitives list, highlighting the bureau's focus on financially motivated cybercrime tied to organized crime.",
+   "severity": "high",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "Dark Reading",
+   "url": "https://www.darkreading.com/cyberattacks-data-breaches/venezuelan-cartel-malware-honcho-nabbed-atm-jackpotting",
+   "published": "2026-10-08T19:08:16Z",
+   "added": "2026-10-08T19:24:13Z",
+   "also": []
+  },
   {
    "id": "ffc305faa6",
    "headline": "China-linked hackers accessed stolen emails via portal",
@@ -190,7 +204,12 @@
    "url": "https://therecord.media/cheap-androids-shipped-with-ad-fraud-malware",
    "published": "2026-10-08T13:00:00Z",
    "added": "2026-10-08T13:18:00Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/low-cost-android-phones-ship-with-residential-proxy-malware/"
+    }
+   ]
   },
   {
    "id": "71799ca35a",
