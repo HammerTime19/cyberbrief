@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-08T09:00:35Z",
+ "updated": "2026-10-08T09:30:39Z",
  "cards": [
   {
    "id": "8f3c408dcb",
@@ -31,6 +31,10 @@
     {
      "source": "The Hacker News",
      "url": "https://thehackernews.com/2026/10/monstercloud-owner-accused-of-billing.html"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/fake-decryption-tools-masked-11m-markup-in-ransomware-recovery-scheme/"
     }
    ]
   },
