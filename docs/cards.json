@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-08T14:00:37Z",
+ "updated": "2026-10-08T14:30:37Z",
  "cards": [
+  {
+   "id": "195dd387c6",
+   "headline": "South Korean megachurches hit by cyberattacks exposing members",
+   "summary": "Two of South Korea's largest Protestant churches confirmed cyberattacks that potentially exposed sensitive data on hundreds of thousands of members, including personal details, financial records, and internal documents. The churches are investigating the incident. Affected congregants should monitor accounts for fraud and consider identity protection services.",
+   "severity": "high",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/south-korea-hackers-megachurches",
+   "published": "2026-10-08T13:55:56Z",
+   "added": "2026-10-08T14:30:37Z",
+   "also": []
+  },
   {
    "id": "d504174414",
    "headline": "Uranium Finance hacker convicted for $53M theft",
