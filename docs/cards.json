@@ -1,6 +1,22 @@
 {
- "updated": "2026-10-08T13:18:00Z",
+ "updated": "2026-10-08T13:30:37Z",
  "cards": [
+  {
+   "id": "d504174414",
+   "headline": "Uranium Finance hacker convicted for $53M theft",
+   "summary": "A Maryland man was convicted of stealing over $53 million from the decentralized crypto exchange Uranium Finance through two attacks in April 2021. The hacker exploited vulnerabilities in the platform's smart contracts to drain funds. The conviction closes a long-running investigation into one of the largest cryptocurrency exchange thefts. Crypto platforms should audit smart contract security and implement multi-signature controls.",
+   "severity": "info",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [
+    "Exchange"
+   ],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/uranium-crypto-exchange-hacker-found-guilty-of-53-million-theft/",
+   "published": "2026-10-08T13:18:36Z",
+   "added": "2026-10-08T13:30:37Z",
+   "also": []
+  },
   {
    "id": "07931fc003",
    "headline": "Thousands cheap Android phones ship with preinstalled ad-fraud malware",
