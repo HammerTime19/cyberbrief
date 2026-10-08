@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-08T18:01:24Z",
+ "updated": "2026-10-08T18:30:38Z",
  "cards": [
   {
    "id": "ee680012cb",
@@ -83,7 +83,12 @@
    "url": "https://thehackernews.com/2026/10/uac-0099-targets-ukrainian-government.html",
    "published": "2026-10-08T15:26:56Z",
    "added": "2026-10-08T15:30:36Z",
-   "also": []
+   "also": [
+    {
+     "source": "Dark Reading",
+     "url": "https://www.darkreading.com/cyberattacks-data-breaches/russian-spies-matchboil-malware-facelift"
+    }
+   ]
   },
   {
    "id": "ec58741183",
