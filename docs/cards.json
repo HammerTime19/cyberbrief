@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-09T18:46:27Z",
+ "updated": "2026-10-09T19:00:36Z",
  "cards": [
   {
    "id": "dc7b54e8c0",
@@ -45,6 +45,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/fbi-arrests-another-suspected-shinyhunters-hacker-after-agency-breach/"
+    },
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/fbi-arrests-another-shinyhunters.html"
     }
    ]
   },
@@ -60,7 +64,12 @@
    "url": "https://www.bleepingcomputer.com/news/security/germany-arrests-alleged-core-qilin-ransomware-member-after-extradition/",
    "published": "2026-10-09T15:38:56Z",
    "added": "2026-10-09T16:00:41Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/japan-germany-ransomware-arrest"
+    }
+   ]
   },
   {
    "id": "b6413b14b4",
