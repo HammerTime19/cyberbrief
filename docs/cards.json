@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-09T16:00:41Z",
+ "updated": "2026-10-09T16:30:34Z",
  "cards": [
+  {
+   "id": "10b8bb2521",
+   "headline": "iRhythm biosensor firm breached summer compromises patient data",
+   "summary": "iRhythm, a manufacturer of wearable cardiac sensors, experienced a data breach during summer 2026. The company has begun notifying state authorities of the incident, which impacted hundreds of thousands of patients. The notification process suggests significant personal information exposure. Affected individuals should monitor accounts and consider credit monitoring services.",
+   "severity": "high",
+   "category": "Breach",
+   "cves": [],
+   "watch": [],
+   "source": "The Record",
+   "url": "https://therecord.media/irhythm-data-breach-reports",
+   "published": "2026-10-09T16:06:00Z",
+   "added": "2026-10-09T16:30:34Z",
+   "also": []
+  },
   {
    "id": "0419de820a",
    "headline": "FBI arrests another ShinyHunters member data breach",
