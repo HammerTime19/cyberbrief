@@ -1,6 +1,34 @@
 {
- "updated": "2026-10-09T09:30:34Z",
+ "updated": "2026-10-09T10:00:40Z",
  "cards": [
+  {
+   "id": "d32c756e31",
+   "headline": "GoBalance flaw enables .onion address hijacking from public data",
+   "summary": "A vulnerability in GoBalance, used by dark-web sites to remain reachable during attacks, allows attackers to derive the secret key controlling a .onion address using only publicly available information. Searchlight Cyber disclosed the flaw on October 8. An attacker with the recovered key can redirect site visitors to malicious copies. Dark-web services should disable and replace affected address keys.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/gobalance-flaw-lets-attackers-hijack.html",
+   "published": "2026-10-09T09:03:24Z",
+   "added": "2026-10-09T10:00:40Z",
+   "also": []
+  },
+  {
+   "id": "e3f3090fc5",
+   "headline": "Google Pixel 10 hacked at Pwn2Own despite full patches",
+   "summary": "Three research teams exploited vulnerabilities in fully patched Google Pixel 10 devices at Pwn2Own Ireland on October 8. Ikotas Labs won $300,000 for the top prize exploit. Pwn2Own requires all targets to be fully patched and passes discovered flaws to vendors. This demonstrates active zero-day exploitability in current-generation Android flagship devices.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/three-teams-demonstrate-remote-hacks-of.html",
+   "published": "2026-10-09T08:26:17Z",
+   "added": "2026-10-09T10:00:40Z",
+   "also": []
+  },
   {
    "id": "ecaa20e52e",
    "headline": "Citrix NetScaler critical RCE vulnerability requires immediate patch",
@@ -17,7 +45,12 @@
    "url": "https://www.securityweek.com/citrix-urges-immediate-patching-of-critical-netscaler-vulnerability/",
    "published": "2026-10-09T06:53:53Z",
    "added": "2026-10-09T07:00:39Z",
-   "also": [],
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/citrix-patches-critical-netscaler-flaw.html"
+    }
+   ],
    "cve_info": {
     "CVE-2026-107406": {
      "kev": false,
@@ -319,6 +352,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/low-cost-android-phones-ship-with-residential-proxy-malware/"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/pre-baked-firmware-malware-hits-budget-android-devices-in-150-countries/"
     }
    ]
   },
