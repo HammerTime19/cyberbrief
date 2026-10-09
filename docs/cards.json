@@ -1,6 +1,34 @@
 {
- "updated": "2026-10-09T20:30:28Z",
+ "updated": "2026-10-09T21:00:38Z",
  "cards": [
+  {
+   "id": "c85e183aba",
+   "headline": "Hackers abuse Google Ads Bing redirects to push ClickFix malware",
+   "summary": "Threat actors are exploiting legitimate Bing search-result redirects embedded in Google search ads to deliver fake Claude installer downloads containing ClickFix malware. The attack leverages trust in Google Ads and legitimate Bing redirects to bypass security warnings. Users should verify software sources directly, avoid clicking suspicious ads, and run endpoint protection to detect ClickFix payloads.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/hackers-abuse-google-ads-bing-redirects-to-push-claude-clickfix-attacks/",
+   "published": "2026-10-09T20:31:37Z",
+   "added": "2026-10-09T21:00:38Z",
+   "also": []
+  },
+  {
+   "id": "fbb4676666",
+   "headline": "Malicious GitHub Actions workflows steal credentials from thousands repos",
+   "summary": "Attackers compromised high-profile open-source maintainer accounts to inject malicious GitHub Actions workflows into over 340 repositories. The campaign used the account of Takashi Kitao, author of the 18,400-star pyxel game engine, to distribute credential-stealing workflows. Developers should review GitHub Actions logs, rotate credentials, and audit repository access permissions immediately.",
+   "severity": "high",
+   "category": "Malware",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/credential-stealing-github-actions.html",
+   "published": "2026-10-09T19:14:28Z",
+   "added": "2026-10-09T21:00:38Z",
+   "also": []
+  },
   {
    "id": "dc7b54e8c0",
    "headline": "P7 DarkSword iOS exploit kit steals crypto wallets",
