@@ -1,6 +1,40 @@
 {
- "updated": "2026-10-09T10:00:40Z",
+ "updated": "2026-10-09T10:30:48Z",
  "cards": [
+  {
+   "id": "fb457f8b9a",
+   "headline": "AhsayCBS flaws exploited for authentication bypass OS command injection",
+   "summary": "Unpatched vulnerabilities CVE-2026-105133 and CVE-2026-105134 in AhsayCBS are being exploited in the wild. The flaws allow attackers to bypass authentication and inject arbitrary OS commands. No patch is currently available. Organizations running AhsayCBS should review network access controls and monitor for suspicious activity immediately.",
+   "severity": "critical",
+   "category": "Vulnerability",
+   "cves": [
+    "CVE-2026-105133",
+    "CVE-2026-105134"
+   ],
+   "watch": [],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/unpatched-ahsaycbs-vulnerabilities-exploited-in-the-wild/",
+   "published": "2026-10-09T10:23:42Z",
+   "added": "2026-10-09T10:30:36Z",
+   "also": [],
+   "cve_info": {
+    "CVE-2026-105133": {
+     "kev": false,
+     "epss": 0.00383,
+     "pct": 0.30256,
+     "cvss": 7.3,
+     "sev": "high"
+    },
+    "CVE-2026-105134": {
+     "kev": false,
+     "epss": 0.01843,
+     "pct": 0.78372,
+     "cvss": 10.0,
+     "sev": "critical"
+    }
+   },
+   "cve_checked": "2026-10-09T10:30:48Z"
+  },
   {
    "id": "d32c756e31",
    "headline": "GoBalance flaw enables .onion address hijacking from public data",
