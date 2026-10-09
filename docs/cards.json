@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-09T01:00:38Z",
+ "updated": "2026-10-09T01:30:31Z",
  "cards": [
   {
    "id": "305b75f770",
@@ -332,7 +332,12 @@
    "url": "https://www.bleepingcomputer.com/news/security/owner-of-empire-cybercrime-market-gets-40-years-in-prison/",
    "published": "2026-10-08T10:29:19Z",
    "added": "2026-10-08T10:30:40Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Record",
+     "url": "https://therecord.media/co-creator-empire-dark-net-market-sentenced"
+    }
+   ]
   },
   {
    "id": "42506f6a55",
