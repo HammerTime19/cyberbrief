@@ -1,6 +1,32 @@
 {
- "updated": "2026-10-09T06:30:27Z",
+ "updated": "2026-10-09T07:00:39Z",
  "cards": [
+  {
+   "id": "ecaa20e52e",
+   "headline": "Citrix NetScaler critical RCE vulnerability requires immediate patch",
+   "summary": "Citrix has warned of CVE-2026-107406, a critical vulnerability in NetScaler that enables remote code execution or denial-of-service attacks. The flaw affects widely deployed network appliances. No exploitation in the wild has been reported yet. Organizations should apply the available patch immediately to prevent compromise of critical infrastructure.",
+   "severity": "critical",
+   "category": "Vulnerability",
+   "cves": [
+    "CVE-2026-107406"
+   ],
+   "watch": [
+    "Citrix"
+   ],
+   "source": "SecurityWeek",
+   "url": "https://www.securityweek.com/citrix-urges-immediate-patching-of-critical-netscaler-vulnerability/",
+   "published": "2026-10-09T06:53:53Z",
+   "added": "2026-10-09T07:00:39Z",
+   "also": [],
+   "cve_info": {
+    "CVE-2026-107406": {
+     "kev": false,
+     "cvss": 9.5,
+     "sev": "critical"
+    }
+   },
+   "cve_checked": "2026-10-09T07:00:39Z"
+  },
   {
    "id": "305b75f770",
    "headline": "764 leader pleads guilty sextortion minors extortion",
@@ -79,6 +105,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/fbi-disrupts-chinese-hacking-tools-used-to-breach-critical-infrastructure/"
+    },
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/fbi-seizes-7-domains-disrupts-flax.html"
     }
    ]
   },
