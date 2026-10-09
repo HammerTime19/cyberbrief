@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-09T17:00:38Z",
+ "updated": "2026-10-09T17:30:33Z",
  "cards": [
   {
    "id": "dc7b54e8c0",
@@ -41,7 +41,12 @@
    "url": "https://therecord.media/shinyhunters-arrest-fbi-data-breach-investigation",
    "published": "2026-10-09T15:41:00Z",
    "added": "2026-10-09T16:00:41Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/fbi-arrests-another-suspected-shinyhunters-hacker-after-agency-breach/"
+    }
+   ]
   },
   {
    "id": "a107c9394b",
@@ -146,6 +151,10 @@
     {
      "source": "The Hacker News",
      "url": "https://thehackernews.com/2026/10/attackers-exploit-ahsaycbs-flaws-to.html"
+    },
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/unpatched-ahsaycbs-flaws-exploited-to-deploy-webshells-mine-crypto/"
     }
    ],
    "cve_info": {
