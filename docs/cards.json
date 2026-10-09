@@ -1,6 +1,34 @@
 {
- "updated": "2026-10-09T12:30:32Z",
+ "updated": "2026-10-09T13:00:42Z",
  "cards": [
+  {
+   "id": "20b164c89d",
+   "headline": "SonicWall SMA1000 maximum-severity flaw actively exploited",
+   "summary": "Attackers are actively exploiting CVE-2026-102255, a maximum-severity vulnerability in SonicWall SMA1000 appliances, just three days after a patch was released. The flaw allows remote attackers to compromise these widely deployed secure access appliances. Organizations running SMA1000 must immediately apply available patches to prevent unauthorized access and network compromise.",
+   "severity": "critical",
+   "category": "Vulnerability",
+   "cves": [
+    "CVE-2026-102255"
+   ],
+   "watch": [
+    "SonicWall"
+   ],
+   "source": "BleepingComputer",
+   "url": "https://www.bleepingcomputer.com/news/security/max-severity-sonicwall-sma1000-flaw-now-exploited-in-attacks/",
+   "published": "2026-10-09T12:32:16Z",
+   "added": "2026-10-09T13:00:40Z",
+   "also": [],
+   "cve_info": {
+    "CVE-2026-102255": {
+     "kev": false,
+     "epss": 0.00477,
+     "pct": 0.39223,
+     "cvss": 10.0,
+     "sev": "critical"
+    }
+   },
+   "cve_checked": "2026-10-09T13:00:42Z"
+  },
   {
    "id": "fda7c383ea",
    "headline": "Ukrainian-Russian admits running 15,000-person money mule network",
