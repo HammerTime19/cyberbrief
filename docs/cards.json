@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-09T14:00:39Z",
+ "updated": "2026-10-09T14:30:40Z",
  "cards": [
+  {
+   "id": "addcfda79a",
+   "headline": "AnyDesk Linux pre-auth RCE exploit published root access",
+   "summary": "Researchers released a working exploit for a pre-authentication remote code execution vulnerability in AnyDesk Linux that grants root access without user approval. AnyDesk patched the flaw in version 8.0.3 in June but provided minimal disclosure, describing it only as a crash fix with no CVE assigned. Users should upgrade immediately to mitigate exploitation risk.",
+   "severity": "high",
+   "category": "Vulnerability",
+   "cves": [],
+   "watch": [],
+   "source": "The Hacker News",
+   "url": "https://thehackernews.com/2026/10/researchers-publish-working-exploit-for.html",
+   "published": "2026-10-09T12:59:22Z",
+   "added": "2026-10-09T14:30:40Z",
+   "also": []
+  },
   {
    "id": "20b164c89d",
    "headline": "SonicWall SMA1000 maximum-severity flaw actively exploited",
@@ -58,7 +72,12 @@
    "url": "https://www.securityweek.com/unpatched-ahsaycbs-vulnerabilities-exploited-in-the-wild/",
    "published": "2026-10-09T10:23:42Z",
    "added": "2026-10-09T10:30:36Z",
-   "also": [],
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/attackers-exploit-ahsaycbs-flaws-to.html"
+    }
+   ],
    "cve_info": {
     "CVE-2026-105133": {
      "kev": false,
@@ -499,7 +518,12 @@
    "url": "https://www.securityweek.com/tp-link-faces-state-lawsuits-and-new-scrutiny-over-isp-router-flaws/",
    "published": "2026-10-08T10:24:04Z",
    "added": "2026-10-08T10:30:40Z",
-   "also": []
+   "also": [
+    {
+     "source": "The Hacker News",
+     "url": "https://thehackernews.com/2026/10/tp-link-sued-by-four-more-us-states.html"
+    }
+   ]
   },
   {
    "id": "2160c75afb",
