@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-09T11:30:33Z",
+ "updated": "2026-10-09T12:00:35Z",
  "cards": [
   {
    "id": "fda7c383ea",
@@ -732,6 +732,10 @@
     {
      "source": "BleepingComputer",
      "url": "https://www.bleepingcomputer.com/news/security/hackers-hijack-google-domains-after-breaching-cctld-registries/"
+    },
+    {
+     "source": "SecurityWeek",
+     "url": "https://www.securityweek.com/google-domains-impacted-by-recent-cctld-domain-hijacks/"
     }
    ]
   },
