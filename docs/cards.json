@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-10T15:00:31Z",
+ "updated": "2026-10-10T15:30:32Z",
  "cards": [
   {
    "id": "63a609a6b1",
@@ -13,7 +13,12 @@
    "url": "https://cyberscoop.com/edward-dubrovsky-cypfer-arrested-fbi-extortion-charges/",
    "published": "2026-10-10T13:35:50Z",
    "added": "2026-10-10T14:00:37Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/cyber-exec-arrested-in-case-allegedly-tied-to-shinyhunters-hackers/"
+    }
+   ]
   },
   {
    "id": "bf4931f049",
