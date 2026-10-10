@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-10T00:00:36Z",
+ "updated": "2026-10-10T00:30:34Z",
  "cards": [
   {
    "id": "c85e183aba",
@@ -77,6 +77,10 @@
     {
      "source": "The Hacker News",
      "url": "https://thehackernews.com/2026/10/fbi-arrests-another-shinyhunters.html"
+    },
+    {
+     "source": "Krebs on Security",
+     "url": "https://krebsonsecurity.com/2026/10/fbi-arrests-founder-of-ransomware-negotiation-firm/"
     }
    ]
   },
