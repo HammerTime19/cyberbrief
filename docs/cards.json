@@ -1,6 +1,20 @@
 {
- "updated": "2026-10-10T13:30:32Z",
+ "updated": "2026-10-10T14:00:37Z",
  "cards": [
+  {
+   "id": "63a609a6b1",
+   "headline": "Canadian cybersecurity executive arrested extortion charges",
+   "summary": "Edward Dubrovsky, former COO of CYPFER, a firm helping organizations negotiate with ransomware operators, was arrested in Pennsylvania on federal conspiracy and extortion charges. The arrest appears linked to the ShinyHunters' attack on FBI IT systems that exposed employee data. FBI Director Kash Patel confirmed a suspected ShinyHunters co-conspirator was arrested, though details remain sealed. Authorities charged him with conspiracy to extort money using threats to confidentiality.",
+   "severity": "high",
+   "category": "Threat actor",
+   "cves": [],
+   "watch": [],
+   "source": "CyberScoop",
+   "url": "https://cyberscoop.com/edward-dubrovsky-cypfer-arrested-fbi-extortion-charges/",
+   "published": "2026-10-10T13:35:50Z",
+   "added": "2026-10-10T14:00:37Z",
+   "also": []
+  },
   {
    "id": "bf4931f049",
    "headline": "Engineer imprisoned for insider cyber extortion industrial firm",
