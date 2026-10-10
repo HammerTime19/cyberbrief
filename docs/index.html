@@ -4,7 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Intel60</title>
-<meta name="description" content="Cybersecurity news in 60 words">
+<meta name="description" content="Cybersecurity news in 60 words: AI-written, severity-rated security briefs from 8 trusted sources, updated every 30 minutes.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Intel60">
+<meta property="og:title" content="Intel60: Cybersecurity news in 60 words">
+<meta property="og:description" content="Severity-rated security briefs from 8 trusted sources, updated every 30 minutes, with CVSS, EPSS and actively-exploited tags.">
+<meta property="og:url" content="https://hammertime19.github.io/intel60/">
+<meta property="og:image" content="https://hammertime19.github.io/intel60/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Intel60 app showing a severity-rated cybersecurity news card">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#E7ECF0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F161F" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
@@ -44,6 +54,7 @@
   }
 }
 * { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 body {
   background: var(--paper);
@@ -73,6 +84,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
   letter-spacing: -0.01em;
 }
 .updated { margin-left: auto; font-size: 0.8125rem; color: var(--muted); }
+.info-btn {
+  align-self: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; padding: 0;
+  border: 1px solid var(--rule); background: transparent; color: var(--muted);
+  font-weight: 800; font-size: 0.875rem; line-height: 1;
+}
 
 .filters {
   display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none;
@@ -185,7 +201,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .daybreak .hint::before { content: "↑"; display: block; font-size: 1.25rem; }
 .tag.watch { border-color: var(--sev); color: var(--sev); }
 
-.foot { margin-top: auto; padding-top: 0.875rem; flex: none; border-top: 1px solid var(--rule); font-size: 0.875rem; }
+.foot {
+  margin-top: auto; padding-top: 0.875rem; flex: none; border-top: 1px solid var(--rule); font-size: 0.875rem;
+  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0.75rem;
+}
+.share {
+  width: 2.5rem; height: 2.5rem; border-radius: 50%; display: grid; place-items: center; padding: 0;
+  border: 1px solid var(--rule); background: color-mix(in srgb, var(--card) 80%, transparent); color: var(--ink);
+}
+.share svg { width: 1.125rem; height: 1.125rem; }
+.tag.mine { border-color: var(--ink); color: var(--ink); font-weight: 750; }
 .source { color: var(--muted); line-height: 1.4; }
 .source a { color: inherit; }
 .read {
@@ -201,6 +226,39 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .empty strong { color: var(--ink); font-size: 1.125rem; }
 .empty button { justify-self: center; padding: 0.5rem 1.125rem; border-radius: 999px; border: 1px solid var(--ink); background: transparent; color: var(--ink); }
 
+/* welcome / about and watchlist sheets */
+dialog.sheet {
+  width: min(32rem, calc(100% - 1.5rem)); max-height: calc(100% - 2rem); margin: auto; padding: 0;
+  border: 1px solid var(--rule); border-radius: 18px; background: var(--card); color: var(--ink);
+}
+dialog.sheet::backdrop { background: rgba(5, 10, 16, 0.6); }
+.sheet-body { padding: 1.5rem 1.375rem 1.25rem; display: grid; gap: 1rem; }
+.sheet h2 { font-size: 2rem; font-weight: 800; font-variation-settings: "wdth" 66; line-height: 1; }
+.sheet .tagline { color: var(--muted); margin-top: 0.375rem; }
+.sheet h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.375rem; }
+.sheet ul { padding-left: 1.125rem; display: grid; gap: 0.25rem; line-height: 1.45; }
+.sheet p { line-height: 1.45; }
+.sheet .fine { font-size: 0.8125rem; color: var(--muted); }
+.sheet .fine a { color: inherit; }
+.sheet .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; text-decoration: none;
+  padding: 0.625rem 1rem; border-radius: 999px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-weight: 700;
+}
+.btn.primary { background: var(--ink); color: var(--card); }
+.sheet textarea {
+  width: 100%; min-height: 5.5rem; font: inherit; padding: 0.625rem 0.75rem; resize: vertical;
+  border-radius: 10px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+}
+.suggest { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+.suggest button { font-size: 0.8125rem; padding: 0.3125rem 0.625rem; border-radius: 999px; border: 1px dashed var(--rule); background: transparent; }
+.toast {
+  position: fixed; left: 50%; bottom: calc(1.5rem + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  background: var(--ink); color: var(--paper); padding: 0.5rem 1rem; border-radius: 999px; font-size: 0.875rem;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.toast.show { opacity: 1; }
+
 @media (max-height: 600px) {
   .headline { margin: 0.75rem 0; }
   .body { padding: 1rem 1rem 0.75rem; }
@@ -214,15 +272,56 @@ button { font: inherit; color: inherit; cursor: pointer; }
   <header class="top">
     <button class="brand" id="brand" title="Back to the newest story">Intel60</button>
     <span class="updated" id="updated"></span>
+    <button class="info-btn" id="about" aria-label="About Intel60">i</button>
   </header>
   <nav class="filters" id="filters" aria-label="Filter stories"></nav>
   <main class="feed" id="feed" tabindex="-1"></main>
   <footer class="status"><span id="position"></span></footer>
 </div>
 
+<dialog class="sheet" id="welcome" aria-labelledby="welcome-title">
+  <div class="sheet-body">
+    <div>
+      <h2 id="welcome-title">Intel60</h2>
+      <p class="tagline">Cybersecurity news in 60 words.</p>
+    </div>
+    <ul>
+      <li><b>Swipe up</b> for the next story; each card is one story you can read in under 30 seconds.</li>
+      <li>Every story is rated <b>Critical</b>, <b>High</b> or <b>Info</b>, with CVSS, exploit chance and an <b>Exploited</b> tag for CVEs.</li>
+      <li>Written by AI from 8 trusted security sources and CISA, updated every 30 minutes.</li>
+    </ul>
+    <div id="install-help"></div>
+    <div class="actions">
+      <button class="btn" data-action="watchlist">&#9733; Set up my watchlist</button>
+      <a class="btn" id="telegram-link" target="_blank" rel="noopener" hidden>Get critical alerts on Telegram</a>
+    </div>
+    <p class="fine">No accounts and no tracking: your watchlist stays on this device.
+      <a href="workflow.html">How Intel60 works</a> &middot; Built by Kushal Mankar.</p>
+    <div class="actions"><button class="btn primary" data-action="close-sheet">Start reading</button></div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="watchlist" aria-labelledby="watchlist-title">
+  <div class="sheet-body">
+    <div>
+      <h2 id="watchlist-title">My watchlist</h2>
+      <p class="tagline">Vendors, products or keywords you care about, separated by commas. Stories that mention them get a &#9733; tag and appear under &#9733; My watchlist.</p>
+    </div>
+    <textarea id="watch-input" placeholder="Fortinet, Okta, AWS, Chrome"></textarea>
+    <div class="suggest" id="watch-suggest"></div>
+    <p class="fine">Saved on this device only.</p>
+    <div class="actions">
+      <button class="btn primary" data-action="save-watchlist">Save</button>
+      <button class="btn" data-action="close-sheet">Cancel</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
 const FILTERS = [
-  ["all", "All"], ["today", "Today"], ["yesterday", "Yesterday"], ["critical", "Critical"],
+  ["all", "All"], ["today", "Today"], ["yesterday", "Yesterday"], ["critical", "Critical"], ["mine", "\u2605 My watchlist"],
   ["Vulnerability", "Vulnerabilities"],
   ["Breach", "Breaches"], ["Ransomware", "Ransomware"], ["Malware", "Malware"],
   ["Threat actor", "Threat actors"], ["Policy", "Policy"], ["Research", "Research"],
@@ -230,6 +329,11 @@ const FILTERS = [
 const SEV_LABEL = { critical: "Critical", high: "High", info: "Info" };
 const SEV_LEVEL = { critical: 3, high: 2, info: 1 };
 const LAST_SEEN_KEY = "intel60:lastSeen";
+const WELCOMED_KEY = "intel60:welcomed";
+const WATCHLIST_KEY = "intel60:watchlist";
+const TELEGRAM_URL = "";  // public channel link, e.g. https://t.me/intel60news; the button stays hidden while empty
+const SUGGESTIONS = ["Microsoft", "Google", "Apple", "AWS", "Cisco", "Fortinet", "Palo Alto", "Ivanti",
+  "Citrix", "Okta", "VMware", "Linux", "Chrome", "Ransomware", "Healthcare", "Education"];
 
 const $ = (id) => document.getElementById(id);
 const feed = $("feed");
@@ -238,6 +342,15 @@ let filter = "all";
 let loadedAt = 0;
 let lastSeen = "";
 try { lastSeen = localStorage.getItem(LAST_SEEN_KEY) || ""; } catch {}
+let myTerms = [];
+try { myTerms = JSON.parse(localStorage.getItem(WATCHLIST_KEY) || "[]").filter((t) => typeof t === "string"); } catch {}
+
+const escapeRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// terms from the reader's own watchlist that this card mentions
+function myHits(c) {
+  const text = `${c.headline} ${c.summary} ${(c.cves || []).join(" ")} ${(c.watch || []).join(" ")}`;
+  return myTerms.filter((t) => new RegExp(`(^|[^\\w])${escapeRe(t)}(?![\\w])`, "i").test(text));
+}
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -268,12 +381,15 @@ function dayLabel(key) {
 
 function renderFilters() {
   $("filters").innerHTML = FILTERS.map(([key, label]) =>
-    `<button data-filter="${esc(key)}" aria-pressed="${key === filter}">${esc(label)}</button>`).join("");
+    `<button data-filter="${esc(key)}" aria-pressed="${key === filter}">${esc(label)}</button>`).join("")
+    + (filter === "mine" && myTerms.length ? '<button data-action="watchlist">Edit</button>' : "");
+  $("filters").querySelector('[aria-pressed="true"]')?.scrollIntoView({ inline: "nearest", block: "nearest" });
 }
 
 function visibleCards() {
   if (filter === "all") return data.cards;
   if (filter === "critical") return data.cards.filter((c) => c.severity === "critical");
+  if (filter === "mine") return data.cards.filter((c) => myHits(c).length);
   if (filter === "today" || filter === "yesterday") {
     return data.cards.filter((c) => dayLabel(dayKey(c.published)).toLowerCase() === filter);
   }
@@ -307,10 +423,15 @@ function dividerHTML(key, count) {
   </section>`;
 }
 
+const SHARE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>';
+
 function cardHTML(c, n) {
   const isNew = lastSeen && c.added > lastSeen;
+  const mine = myHits(c);
   const tags = [
-    ...(c.watch || []).map((w) => `<span class="tag watch">Watchlist: ${esc(w)}</span>`),
+    ...mine.map((w) => `<span class="tag mine">\u2605 ${esc(w)}</span>`),
+    ...(c.watch || []).filter((w) => !mine.some((m) => m.toLowerCase() === w.toLowerCase()))
+      .map((w) => `<span class="tag">${esc(w)}</span>`),
     ...(c.cves || []).map((v) => cveHTML(v, (c.cve_info || {})[v] || {})),
   ].join("");
   const level = SEV_LEVEL[c.severity] || 1;
@@ -331,8 +452,11 @@ function cardHTML(c, n) {
         <p class="summary">${esc(c.summary)}</p>
         ${tags ? `<div class="tags">${tags}</div>` : ""}
         <div class="foot">
-          <div class="source">${esc(c.source)}${also ? `, also covered by ${also}` : ""}</div>
-          <a class="read" href="${esc(c.url)}" target="_blank" rel="noopener">Read the full story</a>
+          <div>
+            <div class="source">${esc(c.source)}${also ? `, also covered by ${also}` : ""}</div>
+            <a class="read" href="${esc(c.url)}" target="_blank" rel="noopener">Read the full story</a>
+          </div>
+          <button class="share" data-share="${esc(c.id)}" aria-label="Share this story">${SHARE_ICON}</button>
         </div>
       </div>
     </article>
@@ -350,6 +474,14 @@ function renderFeed() {
     feed.innerHTML = emptyHTML("No stories yet",
       "The first update runs within 30 minutes of setup. To run it now, open your repo's Actions tab and choose Run workflow.",
       '<button data-action="reload">Check again</button>');
+  } else if (filter === "mine" && !myTerms.length) {
+    feed.innerHTML = emptyHTML("Make Intel60 yours",
+      "Add the vendors, products and topics you care about. Stories that mention them collect here.",
+      '<button data-action="watchlist">Set up my watchlist</button>');
+  } else if (filter === "mine" && !list.length) {
+    feed.innerHTML = emptyHTML("Nothing on your watchlist yet",
+      `No stories from the last two weeks mention ${myTerms.slice(0, 3).join(", ")}${myTerms.length > 3 ? " or the rest" : ""}.`,
+      '<button data-action="watchlist">Edit watchlist</button>');
   } else if (!list.length) {
     feed.innerHTML = emptyHTML("Nothing in this filter",
       filter === "today" ? "No new stories yet today. Choose All to see earlier ones."
@@ -440,11 +572,88 @@ function markSeen() {
   if (newest) try { localStorage.setItem(LAST_SEEN_KEY, newest); } catch {}
 }
 
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+function openSheet(id) {
+  document.querySelectorAll("dialog.sheet[open]").forEach((d) => d.close());
+  const d = $(id);
+  if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+}
+
+function showWelcome() {
+  const ua = navigator.userAgent;
+  const installed = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const how = /iPhone|iPad|iPod/.test(ua) ? "In Safari, tap <b>Share</b>, then <b>Add to Home Screen</b>."
+    : /Android/.test(ua) ? "In Chrome, tap the <b>&#8942;</b> menu, then <b>Install app</b> or <b>Add to Home screen</b>."
+    : "On your phone, open this page and choose <b>Add to Home Screen</b> (iPhone) or <b>Install app</b> (Android).";
+  $("install-help").innerHTML = installed ? "" : `<h3>Install it like an app</h3><p>${how}</p>`;
+  const tg = $("telegram-link");
+  tg.hidden = !TELEGRAM_URL;
+  if (TELEGRAM_URL) tg.href = TELEGRAM_URL;
+  openSheet("welcome");
+}
+
+function showWatchlist() {
+  $("watch-input").value = myTerms.join(", ");
+  $("watch-suggest").innerHTML = SUGGESTIONS.map((t) => `<button data-suggest="${esc(t)}">+ ${esc(t)}</button>`).join("");
+  openSheet("watchlist");
+}
+
+function saveWatchlist() {
+  const seen = new Set();
+  myTerms = $("watch-input").value.split(/[,\n]/).map((t) => t.trim()).filter((t) => t.length >= 2)
+    .filter((t) => !seen.has(t.toLowerCase()) && seen.add(t.toLowerCase())).slice(0, 40);
+  try { localStorage.setItem(WATCHLIST_KEY, JSON.stringify(myTerms)); } catch {}
+  $("watchlist").close();
+  filter = myTerms.length ? "mine" : "all";
+  renderFilters();
+  renderFeed();
+  toast(myTerms.length ? `Watching ${myTerms.length} ${myTerms.length === 1 ? "term" : "terms"}` : "Watchlist cleared");
+}
+
+async function shareCard(id) {
+  const c = data.cards.find((x) => x.id === id);
+  if (!c) return;
+  const url = `${location.origin}${location.pathname}#${id}`;
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: c.headline, text: `${c.headline} (via Intel60)`, url });
+    } else {
+      await navigator.clipboard.writeText(`${c.headline} ${url}`);
+      toast("Link copied");
+    }
+  } catch (err) {
+    if (err?.name !== "AbortError") toast("Couldn't share this story");
+  }
+}
+
 document.addEventListener("click", (e) => {
   const f = e.target.closest("[data-filter]");
   if (f) { filter = f.dataset.filter; renderFilters(); renderFeed(); return; }
   if (e.target.closest("[data-action=reload]")) load();
+  const share = e.target.closest("[data-share]");
+  if (share) { shareCard(share.dataset.share); return; }
+  const action = e.target.closest("[data-action]")?.dataset.action;
+  if (action === "watchlist") showWatchlist();
+  if (action === "save-watchlist") saveWatchlist();
+  if (action === "close-sheet") e.target.closest("dialog")?.close();
+  const sug = e.target.closest("[data-suggest]");
+  if (sug) {
+    const box = $("watch-input");
+    const cur = box.value.split(",").map((t) => t.trim()).filter(Boolean);
+    if (!cur.some((t) => t.toLowerCase() === sug.dataset.suggest.toLowerCase())) cur.push(sug.dataset.suggest);
+    box.value = cur.join(", ");
+    sug.remove();
+  }
 });
+$("about").addEventListener("click", showWelcome);
+$("welcome").addEventListener("close", () => { try { localStorage.setItem(WELCOMED_KEY, "1"); } catch {} });
 $("brand").addEventListener("click", () => { feed.scrollTo({ top: 0 }); load(); });
 window.addEventListener("hashchange", jumpToHash);
 document.addEventListener("visibilitychange", () => {
@@ -461,6 +670,9 @@ setInterval(renderMeta, 60000);
 
 renderFilters();
 load();
+let welcomed = false;
+try { welcomed = !!localStorage.getItem(WELCOMED_KEY); } catch {}
+if (!welcomed) showWelcome();
 if ("serviceWorker" in navigator) {
   // reload once when an updated app version takes over, so it shows right away
   const hadController = !!navigator.serviceWorker.controller;

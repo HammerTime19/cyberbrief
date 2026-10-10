@@ -313,6 +313,35 @@ def ntfy(title, message, priority=3, tags=None, click=None, topic_var="NTFY_TOPI
         log(f"  ! notification failed: {e}")
 
 
+TG_EMOJI = {"rotating_light": "\U0001F6A8", "warning": "⚠️", "newspaper": "\U0001F4F0"}
+
+
+def telegram(title, message, priority=3, tags=None, click=None):
+    """Posts to the readers' Telegram channel (read-only for subscribers) when the bot is configured."""
+    token, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    if not token or not chat:
+        return
+    emoji = next((TG_EMOJI[t] for t in (tags or []) if t in TG_EMOJI), "")
+    text = f"{emoji} <b>{html.escape(title)}</b>\n\n{html.escape(message)}".strip()
+    if click:
+        text += f'\n\n<a href="{html.escape(click, quote=True)}">Open in Intel60</a>'
+    try:
+        resp = requests.post(f"https://api.telegram.org/bot{token}/sendMessage", timeout=15, json={
+            "chat_id": chat, "text": text[:4000], "parse_mode": "HTML",
+            "disable_notification": priority <= 2, "link_preview_options": {"is_disabled": True}})
+        if not resp.ok:
+            raise requests.RequestException(f"{resp.status_code}: {resp.text[:200]}")
+        log(f"  > telegram: {title}")
+    except requests.RequestException as e:
+        log(f"  ! telegram failed: {str(e).replace(token, '***')}")
+
+
+def broadcast(title, message, priority=3, tags=None, click=None):
+    """Reader alerts: the ntfy news topic and the Telegram channel, whichever are configured."""
+    ntfy(title, message, priority=priority, tags=tags, click=click)
+    telegram(title, message, priority=priority, tags=tags, click=click)
+
+
 def admin_alert(title, message, state, key=None, every_hours=None):
     """Problem report for the owner only (NTFY_ADMIN_TOPIC). With key and every_hours,
     the same problem is reported at most once per that many hours."""
@@ -393,13 +422,13 @@ def send_alerts(new_cards, local):
     for c in alerts[:config.NOTIFY_MAX_PER_RUN]:
         crit = c["severity"] == "critical"
         prefix = "Critical" if crit else "Watchlist"
-        ntfy(f"{prefix}: {c['headline']}", c["summary"],
+        broadcast(f"{prefix}: {c['headline']}", c["summary"],
              priority=2 if quiet else (4 if crit else 3),
              tags=["rotating_light"] if crit else ["warning"],
              click=f"{base}#{c['id']}" if base else c["url"])
     extra = alerts[config.NOTIFY_MAX_PER_RUN:]
     if extra:
-        ntfy(f"{len(extra)} more alerts", "\n".join("- " + c["headline"] for c in extra),
+        broadcast(f"{len(extra)} more alerts", "\n".join("- " + c["headline"] for c in extra),
              priority=2 if quiet else 3, tags=["warning"], click=base or None)
 
 
@@ -417,7 +446,7 @@ def send_digest(cards, state, local):
     counts = {s: sum(c["severity"] == s for c in fresh) for s in SEVERITIES}
     parts = [f"{counts[s]} {s}" for s in ("critical", "high") if counts[s]]
     top = sorted(fresh, key=lambda c: SEVERITIES.index(c["severity"]))[:3]
-    ntfy(f"Morning brief: {len(fresh)} new stories" + (f" ({', '.join(parts)})" if parts else ""),
+    broadcast(f"Morning brief: {len(fresh)} new stories" + (f" ({', '.join(parts)})" if parts else ""),
          "\n".join("- " + c["headline"] for c in top),
          priority=3, tags=["newspaper"], click=app_url() or None)
 

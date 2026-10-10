@@ -18,6 +18,7 @@
 - **Writes a 60-word card per story.** An LLM (Claude Haiku) writes the headline and summary, rates severity (critical / high / info), assigns a category, and merges duplicate coverage when several outlets report the same incident.
 - **Adds vulnerability context.** Cards that mention CVEs show the CVSS score (NVD), the probability of exploitation in the next 30 days (FIRST EPSS), and an **Exploited** tag for CVEs on CISA's KEV list.
 - **Pushes what matters.** Critical stories, and high-severity stories that match a watchlist of vendors, go to subscribers' phones through [ntfy](https://ntfy.sh), plus a 7am morning brief. Overnight alerts arrive silently.
+- **Personal and shareable.** Each reader can set a private **My watchlist** (vendors and products, stored only on their device) to get a filtered feed with ★ tags, and every card has a share button that links straight to that story.
 - **Works like an app.** Installable progressive web app with offline support, one card per screen, Today/Yesterday grouping, severity filters, and text that resizes so every story fits.
 
 ## How it works
@@ -74,6 +75,7 @@ Python (requests, feedparser) · GitHub Actions · GitHub Pages · Anthropic API
    - `ANTHROPIC_API_KEY`: from console.anthropic.com. Add about $5 of credit and set a spend limit.
    - `NTFY_TOPIC`: a hard-to-guess topic name for reader alerts, for example `intel60-7f3k9q2m8x`. Anyone who knows an ntfy.sh topic name can read and post to it, so treat it like a password.
    - `NTFY_ADMIN_TOPIC` (optional): a second, private topic for failure alerts and spending reports.
+   - `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` (optional, recommended for public alerts): a bot that is an admin of your Telegram channel, and the channel's `@username`. Subscribers can only read, unlike an ntfy topic. Put the channel's `https://t.me/...` link in `TELEGRAM_URL` in `docs/index.html` to show a join button in the app.
 3. **Add a variable** `AI_PROVIDER` = `anthropic`. Set it to `gemini` and add `GEMINI_API_KEY` to use Google's free tier instead.
 4. **Allow the workflow to push:** Settings > Actions > General > Workflow permissions > Read and write.
 5. **Turn on Pages:** Settings > Pages > Source: GitHub Actions.
