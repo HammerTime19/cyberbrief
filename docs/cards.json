@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-10T14:00:37Z",
+ "updated": "2026-10-10T14:30:30Z",
  "cards": [
   {
    "id": "63a609a6b1",
@@ -554,7 +554,12 @@
    "url": "https://thehackernews.com/2026/10/artex-ai-pentesting-tool-used-in-data.html",
    "published": "2026-10-08T14:12:34Z",
    "added": "2026-10-08T15:30:36Z",
-   "also": []
+   "also": [
+    {
+     "source": "BleepingComputer",
+     "url": "https://www.bleepingcomputer.com/news/security/hacker-used-artex-ai-and-claude-agents-to-target-south-korean-banks/"
+    }
+   ]
   },
   {
    "id": "195dd387c6",
