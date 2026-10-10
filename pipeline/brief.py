@@ -534,6 +534,9 @@ def main():
                 else "Add it under repo Settings > Secrets and variables > Actions.")
         sys.exit(f"{KEY_NAMES[ai]} is not set for AI provider '{ai}'. {hint}")
     log(f"AI provider: {ai} ({config.MODELS[ai]})")
+    if os.environ.get("TEST_ALERT") == "true":
+        telegram("Intel60 alerts are live", "Critical cybersecurity stories will be posted here as they "
+                 "break, plus a 7 AM morning brief. Every story in 60 words.", tags=["newspaper"], click=app_url())
 
     state = load_json(STATE_PATH, {})
     data = load_json(CARDS_PATH, {})

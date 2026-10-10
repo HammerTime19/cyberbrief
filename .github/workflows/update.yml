@@ -9,6 +9,10 @@ on:
         description: "Set to 'timer' by the external 30-minute trigger"
         required: false
         default: manual
+      test_alert:
+        description: "Send a test message to the readers' alert channels"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ["docs/**", "pipeline/**", ".github/workflows/**"]
@@ -54,6 +58,7 @@ jobs:
           NTFY_ADMIN_TOPIC: ${{ secrets.NTFY_ADMIN_TOPIC }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TEST_ALERT: ${{ inputs.test_alert }}
           APP_URL: ${{ vars.APP_URL }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
